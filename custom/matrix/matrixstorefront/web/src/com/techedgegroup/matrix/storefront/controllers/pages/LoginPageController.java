@@ -10,11 +10,18 @@
  */
 package com.techedgegroup.matrix.storefront.controllers.pages;
 
+import de.hybris.platform.acceleratorstorefrontcommons.breadcrumb.Breadcrumb;
+import de.hybris.platform.acceleratorstorefrontcommons.controllers.ThirdPartyConstants;
 import de.hybris.platform.acceleratorstorefrontcommons.controllers.pages.AbstractLoginPageController;
+import de.hybris.platform.acceleratorstorefrontcommons.controllers.util.GlobalMessages;
+import de.hybris.platform.acceleratorstorefrontcommons.forms.GuestForm;
+import de.hybris.platform.acceleratorstorefrontcommons.forms.LoginForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.RegisterForm;
 import de.hybris.platform.cms2.exceptions.CMSItemNotFoundException;
 import de.hybris.platform.cms2.model.pages.AbstractPageModel;
-import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
+import de.hybris.platform.cms2.model.pages.ContentPageModel;
+
+import java.util.Collections;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +39,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
+import com.techedgegroup.matrix.storefront.forms.RegisterFormCustomer;
+
 
 /**
  * Login Controller. Handles login and register for the account flow.
@@ -41,6 +51,40 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LoginPageController extends AbstractLoginPageController
 {
 	private HttpSessionRequestCache httpSessionRequestCache;
+
+	@Override
+	protected String getDefaultLoginPage(final boolean loginError, final HttpSession session, final Model model)
+			throws CMSItemNotFoundException
+	{
+		final LoginForm loginForm = new LoginForm();
+		model.addAttribute(loginForm);
+		model.addAttribute(new RegisterFormCustomer());
+		model.addAttribute(new GuestForm());
+
+		final String username = (String) session.getAttribute(SPRING_SECURITY_LAST_USERNAME);
+		if (username != null)
+		{
+			session.removeAttribute(SPRING_SECURITY_LAST_USERNAME);
+		}
+
+		loginForm.setJ_username(username);
+		storeCmsPageInModel(model, getCmsPage());
+		setUpMetaDataForContentPage(model, (ContentPageModel) getCmsPage());
+		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.INDEX_NOFOLLOW);
+
+		final Breadcrumb loginBreadcrumbEntry = new Breadcrumb("#",
+				getMessageSource().getMessage("header.link.login", null, "header.link.login", getI18nService().getCurrentLocale()),
+				null);
+		model.addAttribute("breadcrumbs", Collections.singletonList(loginBreadcrumbEntry));
+
+		if (loginError)
+		{
+			model.addAttribute("loginError", Boolean.valueOf(loginError));
+			GlobalMessages.addErrorMessage(model, "login.error.account.not.found.title");
+		}
+
+		return getView();
+	}
 
 	@Override
 	protected String getView()

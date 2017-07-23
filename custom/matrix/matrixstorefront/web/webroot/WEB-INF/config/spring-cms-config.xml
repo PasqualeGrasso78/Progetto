@@ -48,6 +48,7 @@
 		<property name="renderers">
 			<map merge="true">
 				<entry key="CMSLinkComponent" value-ref="cmsLinkComponentRenderer"/>
+			<!-- 	<entry key="AssistedServiceComponent" value-ref="assistedServiceComponentRenderer"/> -->
 			</map>
 		</property>
 	</bean>

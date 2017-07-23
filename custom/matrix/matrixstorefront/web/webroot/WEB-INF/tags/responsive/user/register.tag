@@ -10,6 +10,8 @@
 <%@ taglib prefix="theme" tagdir="/WEB-INF/tags/shared/theme"%>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags"%>
 
+
+<spring:url value="/register/newcustomershadow" var="newshadow" />
 <div class="user-register__headline">
 	<spring:theme code="register.new.customer" />
 </div>
@@ -17,10 +19,11 @@
 	<spring:theme code="register.description" />
 </p>
 
-<form:form method="post" commandName="registerForm" action="${action}">
+<form:form method="post" commandName="registerFormCustomer"
+	action="${newshadow}">
 	<formElement:formSelectBox idKey="register.title"
 		labelKey="register.title" selectCSSClass="form-control"
-		path="titleCode" mandatory="true" skipBlank="false"
+		path="titleCode" mandatory="false" skipBlank="false"
 		skipBlankMessageKey="form.select.empty" items="${titles}" />
 	<formElement:formInputBox idKey="register.firstName"
 		labelKey="register.firstName" path="firstName" inputCSS="form-control"
@@ -28,17 +31,30 @@
 	<formElement:formInputBox idKey="register.lastName"
 		labelKey="register.lastName" path="lastName" inputCSS="form-control"
 		mandatory="true" />
+	
+	
 	<formElement:formInputBox idKey="register.email"
 		labelKey="register.email" path="email" inputCSS="form-control"
 		mandatory="true" />
 	<formElement:formPasswordBox idKey="password" labelKey="register.pwd"
-		path="pwd" inputCSS="form-control password-strength" mandatory="true" />
+		path="pwd" inputCSS="form-control password-strength" 
+		mandatory="true" />
 	<formElement:formPasswordBox idKey="register.checkPwd"
 		labelKey="register.checkPwd" path="checkPwd" inputCSS="form-control"
 		mandatory="true" />
+		<formElement:formCheckbox idKey="register.isShadow"
+		labelKey="register.isShadow" path="isShadow" 
+		mandatory="false"/>
+	<formElement:formTextArea idKey="register.notes"  
+		labelKey="register.notes" path="notes" mandatory="false" />
+
+
+
 	<input type="hidden" id="recaptchaChallangeAnswered"
 		value="${requestScope.recaptchaChallangeAnswered}" />
-	<div class="form_field-elements control-group js-recaptcha-captchaaddon"></div>
+	<div
+		class="form_field-elements control-group js-recaptcha-captchaaddon">
+	</div>
 	<div class="form-actions clearfix">
 		<ycommerce:testId code="register_Register_button">
 			<button type="submit" class="btn btn-default btn-block">
