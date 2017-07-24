@@ -1,58 +1,57 @@
-<hybrisconfig xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='../bin/platform/resources/schemas/extensions.xsd'>
-  <extensions>
-    <path dir='${HYBRIS_BIN_DIR}' autoload='false' />
-    <extension name='mcc' />
-    <extension name='adaptivesearchsolr' />
-    <extension name='adaptivesearchbackoffice' />
-    <extension name='adaptivesearchsamplesaddon' />
-    <extension name='commerceservicesbackoffice' />
-    <extension name='solrfacetsearchbackoffice' />
-    <extension name='solrserver' />
-    <extension name='ycommercewebservices' />
-    <extension name='ycommercewebservicestest' />
-    <extension name='electronicsstore' />
-    <extension name='apparelstore' />
-    <extension name='liveeditaddon' />
-    <extension name='acceleratorwebservicesaddon' />
-    <extension name='orderselfserviceaddon' />
-    <extension name='customersupportbackoffice' />
-    <extension name='customerticketingaddon' />
-    <extension name='commerceorgsamplesaddon' />
-    <extension name='rulebuilderbackoffice' />
-    <extension name='couponbackoffice' />
-    <extension name='droolsruleengineservices' />
-    <extension name='couponfacades' />
-    <extension name='promotionenginesamplesaddon' />
-    <extension name='cmswebservices' />
-    <extension name='smarteditwebservices' />
-    <extension name='cmssmarteditwebservices' />
-    <extension name='permissionswebservices' />
-    <extension name='smarteditaddon' />
-    <extension name='cmssmartedit' />
-    <extension name='previewpersonalizationweb' />
-    <extension name='personalizationcmsweb' />
-    <extension name='personalizationsmartedit' />
-    <extension name='personalizationsampledataaddon' />
-    <extension name='personalizationpromotions' />
-    <extension name='personalizationpromotionsweb' />
-    <extension name='personalizationservicesbackoffice' />
-    <extension name='personalizationpromotionsbackoffice' />
-    <extension name='personalizationcmsbackoffice' />
-    <extension name='textfieldconfiguratortemplatebackoffice' />
-    <extension name='textfieldconfiguratortemplateaddon' />
-    <extension name='assistedservicestorefront' />
-    <extension name='assistedservicepromotionaddon' />
-    <extension name='assistedserviceatddtests' />
-    <extension name='promotionengineatddtests' />
-    <extension name='textfieldconfiguratortemplateatddtests' />
-    <extension name='pcmbackofficesamplesaddon' />
-    <!-- custom-extension--> 
-    <extension name="matrixcockpits"/>
-    <extension name="matrixcore"/>
-    <extension name="matrixfacades"/>
-    <extension name="matrixfulfilmentprocess"/>
-    <extension name="matrixinitialdata"/>
-    <extension name="matrixstorefront"/>
-    <extension name="matrixtest"/>
-  </extensions>
+<hybrisconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../bin/platform/resources/schemas/extensions.xsd">
+	<extensions>
+		<path dir="${HYBRIS_BIN_DIR}" autoload="false" />
+		<!-- ext-template -->
+
+		<extension name="mcc" />
+		<extension name="hmc" />
+		<extension name="solrserver" />
+		<extension name="commercesearchbackoffice" />
+		<extension name="commerceservicesbackoffice" />
+		<extension name="rulebuilderbackoffice" />
+		<extension name="customerticketingaddon" />
+		<extension name="customersupportbackoffice" />
+		
+		<!-- importcockpit -->
+
+		<extension name="importcockpit" />
+		<!-- solr backoffice -->
+		<extension name="backofficesolrsearch" />
+		<extension name="solrserver" />
+		<extension name="solrfacetsearch" />
+		<extension name="solrfacetsearchbackoffice" />
+
+		<!-- promo/wishlist -->
+		<extension name="couponbackoffice" />
+		<extension name="droolsruleengineservices" />
+		<extension name="couponfacades" />
+		<extension name="wishlist" />
+		<!-- ASM -->
+		<extension name="assistedservicestorefront" />
+		<extension name="assistedservicefacades" />
+		<extension name="assistedserviceservices" />
+
+		<!-- APPAREL DATA -->
+		<extension name="apparelstore" />
+		
+		<!-- vecchi -->
+		
+		<extension name="commerceorgsamplesaddon" />		
+		<extension name="cmswebservices" />
+		<extension name="smarteditwebservices" />
+		<extension name="cmssmarteditwebservices" />
+		<extension name="permissionswebservices" />
+		<extension name="smarteditaddon" />
+		<extension name="cmssmartedit" />		
+		<extension name="pcmbackofficesamplesaddon" />
+		
+		<!-- custom-extension -->
+		<extension name="matrixcockpits" />
+		<extension name="matrixcore" />
+		<extension name="matrixfacades" />
+		<extension name="matrixfulfilmentprocess" />
+		<extension name="matrixinitialdata" />
+		<extension name="matrixstorefront" />
+		<extension name="matrixtest" />
+	</extensions>
 </hybrisconfig>
