@@ -1,104 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<hybrisconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="resources/schemas/extensions.xsd">
-	<extensions>
-		<!--
-				All extensions located in ${HYBRIS_BIN_DIR}/platform/ext are automatically loaded.
-				More information about how to configure available extensions can be found here : https://wiki.hybris.com/x/nZVzC
-		-->
-
-		<path dir="${HYBRIS_BIN_DIR}" />
-
-		<extension name="admincockpit" />
-		<extension name="backoffice" />
-		<extension name="cockpit" />
-		<extension name="hmc" />
-		<extension name="mcc" />
-		<extension name="platformhmc" />												
-		<extension name="mediaconversion" />
-		<extension name="platformbackoffice" /> 
-										
-		<!-- ext-platform-optional -->
-
-												
-		<!-- <extension name="amazoncloud" />-->
-
-												
-		<!-- <extension name="azurecloud" />-->
-
-												
-		<!-- <extension name="corepluscommons" />-->
-
-												
-		<!-- <extension name="deltadetection" />-->
-
-												
-		<!-- <extension name="y2ysync" />-->
-
-												
-		<!-- <extension name="embeddedserver" />-->
-
-												
-		<!-- <extension name="tomcatembeddedserver" />-->
-
-												
-		<!-- <extension name="gridfsstorage" />-->
-
-												
-		<!-- <extension name="groovynature" />-->
-
-												
-		<!-- <extension name="hmc" />-->
-
-												
-		<!-- <extension name="y2ysynchmc" />-->
-
-												
-		<!-- <extension name="dynamicwebservices" />-->
-
-												
-		<!-- <extension name="ldap" />-->
-
-												
-		<!-- <extension name="platformhmc" />-->
-
-												
-		<!-- <extension name="lucenesearch" />-->
-
-												
-		<!-- <extension name="platformwebservices" />-->
-
-												
-		<!-- <extension name="lucenesearchhmc" />-->
-
-												
-		<!-- <extension name="mediaconversion" />-->
-
-												
-		<!-- <extension name="mediaconversionhmc" />-->
-
-												
-		<!-- <extension name="scalanature" />-->
-
-												
-		<!-- <extension name="springintegrationlibs" />-->
-
-												
-		<!-- <extension name="virtualjdbc" />-->
-
-												
-		<!-- <extension name="y2ysyncdemoelectronics" />-->
-
-										
-		<!-- ext-template -->
-		<!--<extension name="yempty" />
-		<extension name="yhacext" />-->
-
-												
-		<!-- <extension name="ygroovy" />-->
-
-												
-		<!-- <extension name="yscala" />-->
-
-
-	</extensions>
+<hybrisconfig xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='../bin/platform/resources/schemas/extensions.xsd'>
+  <extensions>
+    <path dir='${HYBRIS_BIN_DIR}' autoload='false' />
+    <extension name='mcc' />
+    <extension name='adaptivesearchsolr' />
+    <extension name='adaptivesearchbackoffice' />
+    <extension name='adaptivesearchsamplesaddon' />
+    <extension name='commerceservicesbackoffice' />
+    <extension name='solrfacetsearchbackoffice' />
+    <extension name='solrserver' />
+    <extension name='ycommercewebservices' />
+    <extension name='ycommercewebservicestest' />
+    <extension name='electronicsstore' />
+    <extension name='apparelstore' />
+    <extension name='liveeditaddon' />
+    <extension name='acceleratorwebservicesaddon' />
+    <extension name='orderselfserviceaddon' />
+    <extension name='customersupportbackoffice' />
+    <extension name='customerticketingaddon' />
+    <extension name='commerceorgsamplesaddon' />
+    <extension name='rulebuilderbackoffice' />
+    <extension name='couponbackoffice' />
+    <extension name='droolsruleengineservices' />
+    <extension name='couponfacades' />
+    <extension name='promotionenginesamplesaddon' />
+    <extension name='cmswebservices' />
+    <extension name='smarteditwebservices' />
+    <extension name='cmssmarteditwebservices' />
+    <extension name='permissionswebservices' />
+    <extension name='smarteditaddon' />
+    <extension name='cmssmartedit' />
+    <extension name='previewpersonalizationweb' />
+    <extension name='personalizationcmsweb' />
+    <extension name='personalizationsmartedit' />
+    <extension name='personalizationsampledataaddon' />
+    <extension name='personalizationpromotions' />
+    <extension name='personalizationpromotionsweb' />
+    <extension name='personalizationservicesbackoffice' />
+    <extension name='personalizationpromotionsbackoffice' />
+    <extension name='personalizationcmsbackoffice' />
+    <extension name='textfieldconfiguratortemplatebackoffice' />
+    <extension name='textfieldconfiguratortemplateaddon' />
+    <extension name='assistedservicestorefront' />
+    <extension name='assistedservicepromotionaddon' />
+    <extension name='assistedserviceatddtests' />
+    <extension name='promotionengineatddtests' />
+    <extension name='textfieldconfiguratortemplateatddtests' />
+    <extension name='pcmbackofficesamplesaddon' />
+    <!-- custom-extension--> 
+    <extension name="matrixcockpits"/>
+    <extension name="matrixcore"/>
+    <extension name="matrixfacades"/>
+    <extension name="matrixfulfilmentprocess"/>
+    <extension name="matrixinitialdata"/>
+    <extension name="matrixstorefront"/>
+    <extension name="matrixtest"/>
+  </extensions>
 </hybrisconfig>
