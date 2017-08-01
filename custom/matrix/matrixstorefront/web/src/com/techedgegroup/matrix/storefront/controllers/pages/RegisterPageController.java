@@ -14,7 +14,6 @@ import de.hybris.platform.acceleratorstorefrontcommons.controllers.pages.Abstrac
 import de.hybris.platform.acceleratorstorefrontcommons.forms.RegisterForm;
 import de.hybris.platform.cms2.exceptions.CMSItemNotFoundException;
 import de.hybris.platform.cms2.model.pages.AbstractPageModel;
-import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +26,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
+import com.techedgegroup.matrix.storefront.forms.RegisterFormCustomer;
 
 
 /**
@@ -74,6 +76,15 @@ public class RegisterPageController extends AbstractRegisterPageController
 
 	@RequestMapping(value = "/newcustomer", method = RequestMethod.POST)
 	public String doRegister(final RegisterForm form, final BindingResult bindingResult, final Model model,
+			final HttpServletRequest request, final HttpServletResponse response, final RedirectAttributes redirectModel)
+			throws CMSItemNotFoundException
+	{
+		getRegistrationValidator().validate(form, bindingResult);
+		return processRegisterUserRequest(null, form, bindingResult, model, request, response, redirectModel);
+	}
+
+	@RequestMapping(value = "/newcustomershadow", method = RequestMethod.POST)
+	public String doRegister(final RegisterFormCustomer form, final BindingResult bindingResult, final Model model,
 			final HttpServletRequest request, final HttpServletResponse response, final RedirectAttributes redirectModel)
 			throws CMSItemNotFoundException
 	{
