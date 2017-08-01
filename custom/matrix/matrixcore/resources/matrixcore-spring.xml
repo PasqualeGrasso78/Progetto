@@ -546,6 +546,17 @@
 		<property name="timeService" ref="timeService" />
 	</bean>
 
+	<alias alias="customerAccountService" name="defaultExtendedCustomerAccountService"/>
+	<bean id="defaultExtendedCustomerAccountService"
+		  class="com.techedgegroup.matrix.core.services.impl.DefaultExtendedCustomerAccountService" 
+		  parent="defaultCustomerAccountService">
+	</bean>
+	
+	<alias name="defaultCustomerRecordsService" alias="CustomerRecordsService"/>
+    <bean id="defaultCustomerRecordsService" class="com.techedgegroup.matrix.core.services.impl.DefaultCustomerRecordsService">
+    	<property name="customerRecordsDao" ref="customerRecordsDao"/>
+    </bean>
+	
 	<import resource="/matrixcore/processes/quote/quote-buyer-process-spring.xml"/>
 	<import resource="/matrixcore/processes/quote/quote-salesrep-process-spring.xml"/>
 	<import resource="/matrixcore/processes/quote/quote-seller-approval-process-spring.xml"/>

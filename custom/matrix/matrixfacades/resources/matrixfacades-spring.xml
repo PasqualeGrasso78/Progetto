@@ -190,4 +190,11 @@
 	</bean>
 
 	<bean id="genderData" class="com.techedgegroup.matrix.facades.product.data.GenderData" scope="prototype"/>
+	
+	<alias name="defaultExtendedCustomerFacade" alias="customerFacade"/>
+	<bean id="defaultExtendedCustomerFacade" class="com.techedgegroup.matrix.facades.facade.impl.DefaultExtendedCustomerFacade"
+			parent="defaultCustomerFacade">
+		<property name="extendedCustomerAccountService" ref="defaultExtendedCustomerAccountService"/>
+	</bean>
+	
 </beans>

@@ -16,6 +16,7 @@
         <collectiontype code="GenderList" elementtype="Gender" autocreate="true" generate="true" type="list"/>
         <collectiontype code="SwatchColorSet" elementtype="SwatchColorEnum" autocreate="true" generate="true"
                         type="set"/>
+        <collectiontype code="NotesList" elementtype="Note" autocreate="true" generate="true" type="list"/>
     </collectiontypes>
 
     <enumtypes>
@@ -111,6 +112,39 @@
                 </attributes>
             </itemtype>
         </typegroup>
-
+		
+		<typegroup name="Matrix">
+			<itemtype code="Customer" autocreate="false" generate="false">
+				<description>Matrix Customer extension that contains additional attributes.</description>
+				<attributes>
+					<attribute qualifier="shadowCustomer" type="java.lang.Boolean">
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="notes" type="NotesList">
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					</attributes>
+				</itemtype>
+			<itemtype code="Note"
+			                 extends="GenericItem"
+			                 jaloclass="com.techedgegroup.matrix.core.jalo.Note"
+			                 autocreate="true"
+			                 generate="true">
+			           <deployment table="Note" typecode="10004"/>
+			           
+			 <attributes>
+					<attribute qualifier="code" type="java.lang.String">
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="description" type="java.lang.String">
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+			</attributes>
+		 </itemtype>
+		</typegroup>
     </itemtypes>
 </items>

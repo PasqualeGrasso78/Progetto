@@ -17,7 +17,6 @@ import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.servicelayer.internal.dao.AbstractItemDao;
 import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.search.SearchResult;
-import com.techedgegroup.matrix.core.suggestion.dao.SimpleSuggestionDao;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,10 +25,12 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.util.Assert;
 
+import com.techedgegroup.matrix.core.suggestion.dao.SimpleSuggestionDao;
+
 
 /**
  * Default implementation of {@link SimpleSuggestionDao}.
- * 
+ *
  * Finds products that are related products that the user has bought.
  */
 public class DefaultSimpleSuggestionDao extends AbstractItemDao implements SimpleSuggestionDao
@@ -41,17 +42,12 @@ public class DefaultSimpleSuggestionDao extends AbstractItemDao implements Simpl
 	private static final String REF_QUERY_PARAM_TYPE = "referenceType";
 	private static final String REF_QUERY_PARAM_TYPES = "referenceTypes";
 
-	private static final String REF_QUERY_CATEGORY_START = "SELECT {p.PK}"
-			+ " FROM {Product AS p"
-			+ " LEFT JOIN ProductReference AS r ON {p.PK}={r.target}"
-			+ " LEFT JOIN OrderEntry AS e ON {r.source}={e.product}"
-			+ " LEFT JOIN Order AS o ON {e.order}={o.PK}"
-			+ " LEFT JOIN CategoryProductRelation AS c2p ON {r.source}={c2p.target}"
-			+ " LEFT JOIN Category AS c ON {c2p.source}={c.PK} }"
-			+ " WHERE {o.user}=?user AND {c.PK}=?category";
+	private static final String REF_QUERY_CATEGORY_START = "SELECT {p.PK}" + " FROM {Product AS p"
+			+ " LEFT JOIN ProductReference AS r ON {p.PK}={r.target}" + " LEFT JOIN OrderEntry AS e ON {r.source}={e.product}"
+			+ " LEFT JOIN Order AS o ON {e.order}={o.PK}" + " LEFT JOIN CategoryProductRelation AS c2p ON {r.source}={c2p.target}"
+			+ " LEFT JOIN Category AS c ON {c2p.source}={c.PK} }" + " WHERE {o.user}=?user AND {c.PK}=?category";
 
-	private static final String REF_QUERY_PRODUCT_START = "SELECT DISTINCT {p.PK}, COUNT({p.PK}) AS NUM"
-			+ " FROM {Product AS p"
+	private static final String REF_QUERY_PRODUCT_START = "SELECT DISTINCT {p.PK}, COUNT({p.PK}) AS NUM" + " FROM {Product AS p"
 			+ " LEFT JOIN ProductReference AS r ON {p.PK}={r.target} }"
 			+ " WHERE {r.source} IN (?products) AND {r.target} NOT IN (?products)";
 
