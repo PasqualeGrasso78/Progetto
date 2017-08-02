@@ -6,10 +6,6 @@ package com.techedgegroup.matrix.core.services;
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
 import de.hybris.platform.core.model.user.CustomerModel;
 
-import java.util.List;
-
-import com.techedgegroup.matrix.core.model.NoteModel;
-
 
 /**
  * @author alessio
@@ -24,7 +20,7 @@ public interface ExtendedCustomerAccountService
 	 * @param notes
 	 * @throws DuplicateUidException
 	 */
-	void registerCustomer(CustomerModel customerModel, String password, boolean shadowCustomer, java.util.List<NoteModel> notes)
+	void registerCustomer(CustomerModel customerModel, String password, Boolean shadowCustomer, String notes)
 			throws DuplicateUidException;
 
 	/**
@@ -34,6 +30,5 @@ public interface ExtendedCustomerAccountService
 	 * @param notes
 	 * @throws DuplicateUidException
 	 */
-	void register(CustomerModel customerModel, String password, boolean shadowCustomer, List<NoteModel> notes)
-			throws DuplicateUidException;
+	void register(CustomerModel customerModel, String password, Boolean shadowCustomer, String notes) throws DuplicateUidException;
 }

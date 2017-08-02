@@ -1,7 +1,7 @@
 /**
  *
  */
-package user.data;
+package com.techedgegroup.matrix.core.user.data;
 
 import de.hybris.platform.commercefacades.user.data.RegisterData;
 

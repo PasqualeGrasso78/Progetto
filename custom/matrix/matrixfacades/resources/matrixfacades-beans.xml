@@ -17,18 +17,4 @@
 		<property name="name" type="String" />
 	</bean>
 
-	<bean class="com.techedgegroup.matrix.facades.data.CustomerRecordsData">
-		<property name="title" type="String" />
-		<property name="firstName" type="String" />
-		<property name="lastName" type="String" />
-		<property name="gender" type="String" />
-		<property name="dateOfBirth" type="String" />
-		<property name="country" type="String" />
-		<property name="streetNumber" type="String" />
-		<property name="postalCode" type="String" />
-		<property name="city" type="String" />
-		<property name="province" type="String" />
-		<property name="notes" type="java.util.List&lt;com.techedgegroup.matrix.core.model>" />
-	</bean>
-
 </beans>

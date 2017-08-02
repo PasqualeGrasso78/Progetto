@@ -40,7 +40,7 @@ public class DefaultExtendedCustomerFacade extends DefaultCustomerFacade impleme
 		setUidForRegister(registerData, newCustomer);
 		newCustomer.setSessionLanguage(getCommonI18NService().getCurrentLanguage());
 		newCustomer.setSessionCurrency(getCommonI18NService().getCurrentCurrency());
-		getExtendedCustomerAccountService().register(newCustomer, registerData.getPassword(), registerData.isShadowCustomer(),
+		getExtendedCustomerAccountService().register(newCustomer, registerData.getPassword(), registerData.getShadowCustomer(),
 				registerData.getNotes());
 	}
 

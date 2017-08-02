@@ -554,8 +554,14 @@
 	
 	<alias name="defaultCustomerRecordsService" alias="CustomerRecordsService"/>
     <bean id="defaultCustomerRecordsService" class="com.techedgegroup.matrix.core.services.impl.DefaultCustomerRecordsService">
-    	<property name="customerRecordsDao" ref="customerRecordsDao"/>
+    	<property name="customerRecordsDao" ref="defaultCustomerRecordsDao"/>
     </bean>
+	
+	<alias alias="customerRecordsDao" name="defaultCustomerRecordsDao"/>
+	<bean id="defaultCustomerRecordsDao"
+	      class="com.techedgegroup.matrix.core.dao.impl.DefaultCustomerRecordsDao">
+		<property name="flexibleSearchService" ref="flexibleSearchService"/>
+	</bean>
 	
 	<import resource="/matrixcore/processes/quote/quote-buyer-process-spring.xml"/>
 	<import resource="/matrixcore/processes/quote/quote-salesrep-process-spring.xml"/>

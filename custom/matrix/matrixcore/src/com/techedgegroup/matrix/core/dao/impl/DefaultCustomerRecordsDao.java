@@ -17,13 +17,32 @@ import com.techedgegroup.matrix.core.dao.CustomerRecordsDao;
 public class DefaultCustomerRecordsDao implements CustomerRecordsDao
 {
 	private FlexibleSearchService flexibleSearchService;
-	private String queryString;
+
+
+	/**
+	 * @return the flexibleSearchService
+	 */
+	public FlexibleSearchService getFlexibleSearchService()
+	{
+		return flexibleSearchService;
+	}
+
+
+	/**
+	 * @param flexibleSearchService
+	 *           the flexibleSearchService to set
+	 */
+	public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService)
+	{
+		this.flexibleSearchService = flexibleSearchService;
+	}
+
 
 	@Override
 	public CustomerModel findCustomerRecords(final String code)
 	{
 
-		queryString = "SELECT {p:" + CustomerModel.PK + "}" //
+		final String queryString = "SELECT {p:" + CustomerModel.PK + "}" //
 				+ "FROM {" + CustomerModel._TYPECODE + " AS p} "//
 				+ "WHERE " + "{p:" + CustomerModel.CUSTOMERID + "}=?code ";
 

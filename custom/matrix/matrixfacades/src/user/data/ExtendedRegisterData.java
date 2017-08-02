@@ -5,22 +5,17 @@ package user.data;
 
 import de.hybris.platform.commercefacades.user.data.RegisterData;
 
-import java.util.List;
-
-import com.techedgegroup.matrix.core.model.NoteModel;
-
 
 public class ExtendedRegisterData extends RegisterData
 {
 
-	private boolean shadowCustomer;
-
-	private List<NoteModel> notes;
+	private Boolean shadowCustomer;
+	private String notes;
 
 	/**
 	 * @return the shadowCustomer
 	 */
-	public boolean isShadowCustomer()
+	public Boolean getShadowCustomer()
 	{
 		return shadowCustomer;
 	}
@@ -29,7 +24,7 @@ public class ExtendedRegisterData extends RegisterData
 	 * @param shadowCustomer
 	 *           the shadowCustomer to set
 	 */
-	public void setShadowCustomer(final boolean shadowCustomer)
+	public void setShadowCustomer(final Boolean shadowCustomer)
 	{
 		this.shadowCustomer = shadowCustomer;
 	}
@@ -37,17 +32,17 @@ public class ExtendedRegisterData extends RegisterData
 	/**
 	 * @return the notes
 	 */
-	public List<NoteModel> getNotes()
+	public String getNotes()
 	{
 		return notes;
 	}
 
 	/**
-	 * @param notes
+	 * @param string
 	 *           the notes to set
 	 */
-	public void setNotes(final List<NoteModel> notes)
+	public void setNotes(final String string)
 	{
-		this.notes = notes;
+		this.notes = string;
 	}
 }
