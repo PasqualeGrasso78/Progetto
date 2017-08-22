@@ -10,7 +10,8 @@ import de.hybris.platform.core.model.user.CustomerModel;
  * @author alessio
  *
  */
-public interface CustomerRegordsService
+public interface CustomerRecordsService
 {
 	CustomerModel getCustomerForCode(String code);
+
 }

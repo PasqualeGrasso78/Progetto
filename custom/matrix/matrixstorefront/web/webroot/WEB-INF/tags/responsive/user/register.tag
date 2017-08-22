@@ -31,22 +31,23 @@
 	<formElement:formInputBox idKey="register.lastName"
 		labelKey="register.lastName" path="lastName" inputCSS="form-control"
 		mandatory="true" />
-	
-	
+
+
 	<formElement:formInputBox idKey="register.email"
 		labelKey="register.email" path="email" inputCSS="form-control"
 		mandatory="true" />
 	<formElement:formPasswordBox idKey="password" labelKey="register.pwd"
-		path="pwd" inputCSS="form-control password-strength" 
-		mandatory="true" />
+		path="pwd" inputCSS="form-control password-strength" mandatory="true" />
 	<formElement:formPasswordBox idKey="register.checkPwd"
 		labelKey="register.checkPwd" path="checkPwd" inputCSS="form-control"
 		mandatory="true" />
-		<formElement:formCheckbox idKey="register.isShadow"
-		labelKey="register.isShadow" path="isShadow" 
-		mandatory="false"/>
-	<formElement:formTextArea idKey="register.notes"  
+	<formElement:formCheckbox idKey="register.isShadow"
+		labelKey="register.isShadow" path="isShadow" mandatory="false" />
+	<formElement:formTextArea idKey="register.notes"
 		labelKey="register.notes" path="notes" mandatory="false" />
+		<!--<form:textarea idKey="register.notes"
+		labelKey="register.notes" path="notes" mandatory="false" style="width:100%;" />-->
+	
 
 
 

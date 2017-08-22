@@ -51,5 +51,4 @@ public class DefaultCustomerRecordsDao implements CustomerRecordsDao
 
 		return (CustomerModel) flexibleSearchService.<CustomerModel> search(query).getResult();
 	}
-
 }

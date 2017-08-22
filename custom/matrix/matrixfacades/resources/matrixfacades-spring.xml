@@ -197,4 +197,5 @@
 		<property name="extendedCustomerAccountService" ref="defaultExtendedCustomerAccountService"/>
 	</bean>
 	
+
 </beans>

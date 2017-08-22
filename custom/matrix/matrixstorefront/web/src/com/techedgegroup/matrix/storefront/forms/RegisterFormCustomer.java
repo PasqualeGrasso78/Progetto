@@ -15,6 +15,8 @@ public class RegisterFormCustomer extends RegisterForm
 	private Boolean isShadow = false;
 	private String notes;
 
+
+
 	/**
 	 * @return the isShadow
 	 */
@@ -48,6 +50,11 @@ public class RegisterFormCustomer extends RegisterForm
 	{
 		this.notes = notes;
 	}
+
+	/**
+	 * @return the news
+	 */
+
 
 
 }

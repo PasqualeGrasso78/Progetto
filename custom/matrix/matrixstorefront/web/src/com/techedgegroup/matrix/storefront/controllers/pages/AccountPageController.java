@@ -37,11 +37,9 @@ import de.hybris.platform.commercefacades.order.CheckoutFacade;
 import de.hybris.platform.commercefacades.order.OrderFacade;
 import de.hybris.platform.commercefacades.order.data.CCPaymentInfoData;
 import de.hybris.platform.commercefacades.order.data.OrderData;
-import de.hybris.platform.commercefacades.order.data.OrderEntryData;
 import de.hybris.platform.commercefacades.order.data.OrderHistoryData;
 import de.hybris.platform.commercefacades.product.ProductFacade;
 import de.hybris.platform.commercefacades.product.ProductOption;
-import de.hybris.platform.commercefacades.product.data.ProductData;
 import de.hybris.platform.commercefacades.user.UserFacade;
 import de.hybris.platform.commercefacades.user.data.AddressData;
 import de.hybris.platform.commercefacades.user.data.CountryData;
@@ -55,14 +53,12 @@ import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import de.hybris.platform.commerceservices.util.ResponsiveUtils;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.util.Config;
-import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -82,6 +78,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
 
 
 /**
@@ -116,8 +114,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	/**
 	 * We use this suffix pattern because of an issue with Spring 3.1 where a Uri value is incorrectly extracted if it
-	 * contains on or more '.' characters. Please see https://jira.springsource.org/browse/SPR-6164 for a discussion on
-	 * the issue and future resolution.
+	 * contains on or more '.' characters. Please see https://jira.springsource.org/browse/SPR-6164 for a discussion on the
+	 * issue and future resolution.
 	 */
 	private static final String ORDER_CODE_PATH_VARIABLE_PATTERN = "{orderCode:.*}";
 	private static final String ADDRESS_CODE_PATH_VARIABLE_PATTERN = "{addressCode:.*}";
@@ -147,6 +145,10 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@Resource(name = "customerFacade")
 	private CustomerFacade customerFacade;
+
+	/*
+	 * @Resource(name = "extendedCustomerFacade") private ExtendedCustomerFacade extendedCustomerFacade;
+	 */
 
 	@Resource(name = "accountBreadcrumbBuilder")
 	private ResourceBreadcrumbBuilder accountBreadcrumbBuilder;
@@ -180,7 +182,7 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@Resource(name = "addressDataUtil")
 	private AddressDataUtil addressDataUtil;
-	
+
 	protected PasswordValidator getPasswordValidator()
 	{
 		return passwordValidator;
@@ -288,8 +290,7 @@ public class AccountPageController extends AbstractSearchPageController
 	@RequireHardLogIn
 	public String orders(@RequestParam(value = "page", defaultValue = "0") final int page,
 			@RequestParam(value = "show", defaultValue = "Page") final ShowMode showMode,
-			@RequestParam(value = "sort", required = false) final String sortCode, final Model model)
-			throws CMSItemNotFoundException
+			@RequestParam(value = "sort", required = false) final String sortCode, final Model model) throws CMSItemNotFoundException
 	{
 		// Handle paged search results
 		final PageableData pageableData = createPageableData(page, 5, sortCode, showMode);
@@ -314,8 +315,8 @@ public class AccountPageController extends AbstractSearchPageController
 			model.addAttribute("orderData", orderDetails);
 
 			final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-			breadcrumbs.add(new Breadcrumb("/my-account/orders", getMessageSource().getMessage("text.account.orderHistory", null,
-					getI18nService().getCurrentLocale()), null));
+			breadcrumbs.add(new Breadcrumb("/my-account/orders",
+					getMessageSource().getMessage("text.account.orderHistory", null, getI18nService().getCurrentLocale()), null));
 			breadcrumbs.add(new Breadcrumb("#", getMessageSource().getMessage("text.account.order.orderBreadcrumb", new Object[]
 			{ orderDetails.getCode() }, "Order {0}", getI18nService().getCurrentLocale()), null));
 			model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
@@ -333,13 +334,14 @@ public class AccountPageController extends AbstractSearchPageController
 		return getViewForPage(model);
 	}
 
-	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN + "/getReadOnlyProductVariantMatrix", method = RequestMethod.GET)
+	@RequestMapping(value = "/order/" + ORDER_CODE_PATH_VARIABLE_PATTERN
+			+ "/getReadOnlyProductVariantMatrix", method = RequestMethod.GET)
 	@RequireHardLogIn
 	public String getProductVariantMatrixForResponsive(@PathVariable("orderCode") final String orderCode,
 			@RequestParam("productCode") final String productCode, final Model model)
 	{
 		final OrderData orderData = orderFacade.getOrderDetailsForCodeWithoutUser(orderCode);
-		
+
 		final Map<String, ReadOnlyOrderGridData> readOnlyMultiDMap = orderGridFormFacade.getReadOnlyOrderGridForProductInOrder(
 				productCode, Arrays.asList(ProductOption.BASIC, ProductOption.CATEGORIES), orderData);
 		model.addAttribute("readOnlyMultiDMap", readOnlyMultiDMap);
@@ -528,6 +530,7 @@ public class AccountPageController extends AbstractSearchPageController
 		return returnAction;
 	}
 
+
 	@RequestMapping(value = "/update-password", method = RequestMethod.GET)
 	@RequireHardLogIn
 	public String updatePassword(final Model model) throws CMSItemNotFoundException
@@ -546,8 +549,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@RequestMapping(value = "/update-password", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String updatePassword(final UpdatePasswordForm updatePasswordForm, final BindingResult bindingResult,
-			final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
+	public String updatePassword(final UpdatePasswordForm updatePasswordForm, final BindingResult bindingResult, final Model model,
+			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
 		getPasswordValidator().validate(updatePasswordForm, bindingResult);
 		if (!bindingResult.hasErrors())
@@ -615,10 +618,11 @@ public class AccountPageController extends AbstractSearchPageController
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 
 		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL, getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null,
-				getI18nService().getCurrentLocale()), null));
-		breadcrumbs.add(new Breadcrumb("#", getMessageSource().getMessage("text.account.addressBook.addEditAddress", null,
-				getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
+				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb("#",
+				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
+				null));
 		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		return getViewForPage(model);
@@ -658,8 +662,8 @@ public class AccountPageController extends AbstractSearchPageController
 		else
 		{
 			newAddress.setDefaultAddress(addressForm.getDefaultAddress() != null && addressForm.getDefaultAddress().booleanValue());
-		}		
-		
+		}
+
 		final AddressVerificationResult<AddressVerificationDecision> verificationResult = getAddressVerificationFacade()
 				.verifyAddressData(newAddress);
 		final boolean addressRequiresReview = getAddressVerificationResultHandler().handleResult(verificationResult, newAddress,
@@ -738,10 +742,11 @@ public class AccountPageController extends AbstractSearchPageController
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 
 		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL, getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null,
-				getI18nService().getCurrentLocale()), null));
-		breadcrumbs.add(new Breadcrumb("#", getMessageSource().getMessage("text.account.addressBook.addEditAddress", null,
-				getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
+				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb("#",
+				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
+				null));
 		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		model.addAttribute("edit", Boolean.TRUE);

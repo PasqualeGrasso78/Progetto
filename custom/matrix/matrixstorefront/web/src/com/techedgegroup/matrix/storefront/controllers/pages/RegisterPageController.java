@@ -46,6 +46,7 @@ public class RegisterPageController extends AbstractRegisterPageController
 {
 	private HttpSessionRequestCache httpSessionRequestCache;
 	private static final String FORM_GLOBAL_ERROR = "form.global.error";
+	@Resource(name = "customerFacade")
 	private ExtendedCustomerFacade extendedCustomerFacade;
 	private static final Logger LOGGER = Logger.getLogger(AbstractRegisterPageController.class);
 
@@ -110,10 +111,12 @@ public class RegisterPageController extends AbstractRegisterPageController
 	}
 
 
-	protected String processRegisterUserRequest(final RegisterFormCustomer form, final BindingResult bindingResult,
-			final Model model, final HttpServletRequest request, final HttpServletResponse response,
-			final RedirectAttributes redirectModel) throws CMSItemNotFoundException // NOSONAR
+	protected String processRegisterUserRequest(final String referer, final RegisterFormCustomer form,
+			final BindingResult bindingResult, final Model model, final HttpServletRequest request,
+			final HttpServletResponse response, final RedirectAttributes redirectModel) throws CMSItemNotFoundException // NOSONAR
 	{
+
+
 		if (bindingResult.hasErrors())
 		{
 			model.addAttribute(form);
@@ -159,7 +162,7 @@ public class RegisterPageController extends AbstractRegisterPageController
 			final HttpServletRequest request, final HttpServletResponse response, final RedirectAttributes redirectModel)
 			throws CMSItemNotFoundException
 	{
-		//getRegistrationValidator().validate(form, bindingResult);
+		getRegistrationValidator().validate(form, bindingResult);
 		return processRegisterUserRequest(null, form, bindingResult, model, request, response, redirectModel);
 	}
 }

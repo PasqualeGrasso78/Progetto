@@ -7,14 +7,14 @@ import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 
 import com.techedgegroup.matrix.core.dao.CustomerRecordsDao;
-import com.techedgegroup.matrix.core.services.CustomerRegordsService;
+import com.techedgegroup.matrix.core.services.CustomerRecordsService;
 
 
 /**
  * @author alessio
  *
  */
-public class DefaultCustomerRecordsService implements CustomerRegordsService
+public class DefaultCustomerRecordsService implements CustomerRecordsService
 {
 	private CustomerRecordsDao customerRecordsDao;
 

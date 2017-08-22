@@ -15,6 +15,7 @@
         <c:set var="headline"><spring:theme code="text.account.addressBook.addAddress" /></c:set>
 	</c:otherwise>
 </c:choose>
+
 <div class="back-link border">
     <div class="row">
         <div class="container-lg col-md-6">
