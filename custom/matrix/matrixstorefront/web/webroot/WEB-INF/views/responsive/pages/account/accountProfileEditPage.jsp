@@ -54,143 +54,132 @@
         </div>
    </div>  
 
-<div class="form-group">
-				<label class="control-label " for="address.firstName">
-			ADD ADDRESS</label>            
 
-<div class="back-link border">
-    <div class="row">
-        <div class="container-lg col-md-6">
-            <span class="label">${headline}</span>
-        </div>
+<div class="account-section-header ${noBorder}">
+    <spring:theme code="text.account.addressBook"/>
+
+        <ycommerce:testId code="addressBook_addNewAddress_button">
+            <div class="account-section-header-add pull-right">
+                <a href="add-address">
+                    <spring:theme code="text.account.addressBook.addAddress"/>
+                </a>
+            </div>
+        </ycommerce:testId>
     </div>
 </div>
 
 
-<div class="row">
-    <div class="container-lg col-md-6">
-        <div class="account-section-content">
-            <div class="account-section-form">
-                
-			<form id="addressForm" action="/matrixstorefront/en/my-account/add-address" method="post">
-				<input id="addressId" name="addressId" class="add_edit_delivery_address_id" type="hidden" value="">
-				<input type="hidden" name="bill_state" id="address.billstate">
-			
-				<div id="countrySelector" data-address-code="" data-country-iso-code="" class="form-group">
-					<div class="form-group">
-						<label class="control-label " for="address.country">
-						Country<span class="mandatory">
-								</span>
-						<span class="skip">
-								</span>
-					</label>
-					<div class="control">
-						<select id="address.country" name="countryIso" class="form-control"><option value="" disabled="disabled" selected="selected">
-							Country</option>
-							<option value="GG">Guernsey</option><option value="IM">Isle of Man</option><option value="JE">Jersey</option><option value="GB">United Kingdom</option></select></div>
-					</div>
-				
-				    </div>
-				    <div id="i18nAddressForm" class="i18nAddressForm">
+<%---agg --%>
 
-		           <div class="form-group">
-					<label class="control-label " for="address.title">
-					Title<span class="mandatory">
-							</span>
-					<span class="skip">
-							</span>
-					</label>
-			<div class="control">
-					<select id="address.title" name="titleCode" class="form-control"><option value="" disabled="disabled" selected="selected">
-							title</option>
-						<option value="mr">Mr.</option><option value="mrs">Mrs.</option><option value="miss">Miss</option><option value="ms">Ms.</option><option value="dr">Dr.</option><option value="rev">Rev.</option></select></div>
-					</div>
-		
-			<div class="form-group">
-					<label class="control-label " for="address.firstName">
-				First Name</label>
-				
-			<input id="address.firstName" name="firstName" class="form-control form-control" type="text" value=""></div>
-			
-			<div class="form-group">
-					<label class="control-label " for="address.surname">
-				Last Name</label>
-				
-			<input id="address.surname" name="lastName" class="form-control form-control" type="text" value=""></div>
-			
-			<div class="form-group">
-					<label class="control-label " for="address.line1">
-				Address Line 1</label>
-				
-			<input id="address.line1" name="line1" class="form-control form-control" type="text" value=""></div>
-			
-			<div class="form-group">
-					<label class="control-label " for="address.line2">
-				Address Line 2<span>&nbsp;(optional)</span>
-				</label>
-				
-			<input id="address.line2" name="line2" class="form-control form-control" type="text" value=""></div>
-			
-			<div class="form-group">
-					<label class="control-label " for="address.townCity">
-				City</label>
-				
-			<input id="address.townCity" name="townCity" class="form-control form-control" type="text" value=""></div>
-			
-			<div class="form-group">
-					<label class="control-label " for="address.postcode">
-				Post Code</label>
-				
-			<input id="address.postcode" name="postcode" class="form-control form-control" type="text" value=""></div>
-			
-	        <div class="form-group">
-					<label class="control-label " for="address.phone">
-				Phone number<span>&nbsp;(optional)</span>
-				</label>
-				
-			<input id="address.phone" name="phone" class="form-control form-control" type="text" value=""></div>
 
-			<div>
-			<input type="hidden" name="CSRFToken" value="518e9047-6a1f-47c7-9257-5d975f3dbdd4">
-			</div></div>
-		
-			<div class="checkbox">
-				    <div class="form-group">
-				<div class="checkbox">
-	   		
-	   		<label class="control-label add-address-left-label" for="defaultAddress">
-	   			<input id="defaultAddress" name="defaultAddress" class="add-address-left-input" type="checkbox" value="true"><input type="hidden" name="_defaultAddress" value="on">Make this my default address<span class="mandatory">
-	   					</span>
-	   			<span class="skip"></span>
-	   		</label>
-	   	</div>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-</div>
-</div>
-		
-		<div id="addressform_button_panel" class="form-actions">
-					<div class="accountActions">
-						<div class="row">
-							<div class="col-sm-6 col-sm-push-6 accountButtons">
-									<button class="btn btn-primary btn-block change_address_button show_processing_message" type="submit">
-										Save
-									</button>
-							</div>
-							<div class="col-sm-6 col-sm-pull-6 accountButtons">
-									<a class="btn btn-block btn-default" href="../my-account/update-profile">
-										Cancel
-									</a>
-								
-							</div>
+<spring:htmlEscape defaultHtmlEscape="true" />
+<div class="account-addressbook account-list">
+    <c:if test="${empty addressData}">
+		<div class="account-section-content content-empty">
+			<spring:theme code="text.account.addressBook.noSavedAddresses" />
+		</div>
+    </c:if>
+
+    <c:if test="${not empty addressData}">
+	    <div class="account-cards card-select">
+			<div class="row">
+				<c:forEach items="${addressData}" var="address">
+					<div class="col-xs-12 col-sm-6 col-md-4 card">
+						<ul class="pull-left">
+							<li>
+								<strong>${fn:escapeXml(address.title)}&nbsp;${fn:escapeXml(address.firstName)}&nbsp;${fn:escapeXml(address.lastName)}
+									<c:if test="${address.defaultAddress}">
+										(<spring:theme code="text.default"/>)
+									</c:if>
+								</strong>
+							</li>
+							<li>${fn:escapeXml(address.line1)}</li>
+							<c:if test="${not empty fn:escapeXml(address.line2)}">
+								<li>${fn:escapeXml(address.line2)}</li>
+							</c:if>
+							<li>${fn:escapeXml(address.town)}&nbsp;${fn:escapeXml(address.region.name)}</li>
+							<li> ${fn:escapeXml(address.country.name)}&nbsp;${fn:escapeXml(address.postalCode)}</li>
+							<li>${fn:escapeXml(address.phone)}</li>
+						</ul>
+
+						<c:if test="${not address.defaultAddress}">
+							<ycommerce:testId code="addressBook_isDefault_button">
+								<a class="account-set-default-address" href="set-default-address/${fn:escapeXml(address.id)}">
+									<spring:theme code="text.setDefault"/>
+								</a>
+							</ycommerce:testId>
+						</c:if>
+						<div class="account-cards-actions pull-left">
+							<ycommerce:testId code="addressBook_editAddress_button">
+								<a class="action-links" href="edit-address/${fn:escapeXml(address.id)}">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+							</ycommerce:testId>
+							<ycommerce:testId code="addressBook_removeAddress_button">
+								<a href="#" class="action-links removeAddressFromBookButton" data-address-id="${fn:escapeXml(address.id)}" data-popup-title="<spring:theme code="text.address.delete.popup.title" />">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</ycommerce:testId>
 						</div>
 					</div>
-				
+				</c:forEach>
+			</div>
 			
-		</div>
-	<div>
-<input type="hidden" name="CSRFToken" value="518e9047-6a1f-47c7-9257-5d975f3dbdd4">
-</div></form>
-</div>
-        </div>
-    </div>
+			<c:forEach items="${addressData}" var="address">
+		        <div class="display-none">
+		       	 	<div id="popup_confirm_address_removal_${fn:escapeXml(address.id)}" class="account-address-removal-popup">
+		        		<div class="addressItem">
+		        			<spring:theme code="text.address.remove.following" />
+		       				
+		       				<div class="address">
+						        <strong>
+						        ${fn:escapeXml(address.title)}&nbsp;
+						        ${fn:escapeXml(address.firstName)}&nbsp;
+						        ${fn:escapeXml(address.lastName)}
+						        </strong>
+						        <br>
+						        ${fn:escapeXml(address.line1)}&nbsp;
+						        ${fn:escapeXml(address.line2)}
+						        <br>
+						        ${fn:escapeXml(address.town)}&nbsp;
+						        <c:if test="${not empty address.region.name }">
+						            ${fn:escapeXml(address.region.name)}&nbsp;
+						        </c:if>
+						        <br>
+						        ${fn:escapeXml(address.country.name)}&nbsp;
+						        ${fn:escapeXml(address.postalCode)}
+						        <br/>
+						
+						
+						        ${fn:escapeXml(address.phone)}
+		       				</div>
+					        
+					        <div class="modal-actions">
+                                <div class="row">
+                                    <ycommerce:testId code="addressRemove_delete_button">
+                                        <div class="col-xs-12 col-sm-6 col-sm-push-6">
+                                            <a class="btn btn-primary btn-block" data-address-id="${fn:escapeXml(address.id)}" href="remove-address/${fn:escapeXml(address.id)}">
+                                                <spring:theme code="text.address.delete" />
+                                            </a>
+                                        </div>
+                                    </ycommerce:testId>
+                                    <div class="col-xs-12 col-sm-6 col-sm-pull-6">
+                                        <a class="btn btn-default btn-block closeColorBox" data-address-id="${fn:escapeXml(address.id)}">
+                                            <spring:theme code="text.button.cancel"/>
+                                        </a>
+                                    </div>
+					       	    </div>
+					       	</div>
+		        		</div>
+		        	</div>
+		        </div>
+		    </c:forEach>
+	    </div>
+    </c:if>
 </div>

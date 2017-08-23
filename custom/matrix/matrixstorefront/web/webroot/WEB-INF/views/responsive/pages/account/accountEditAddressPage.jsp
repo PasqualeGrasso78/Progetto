@@ -5,7 +5,7 @@
 
 <spring:htmlEscape defaultHtmlEscape="true" />
 
-<spring:url value="/my-account/address-book" var="addressBookUrl" htmlEscape="false" />
+<spring:url value="/my-account/update-profile" var="updateProfileUrl" htmlEscape="false" />
 
 <c:choose>
 	<c:when test="${edit eq true }">
@@ -19,7 +19,7 @@
 <div class="back-link border">
     <div class="row">
         <div class="container-lg col-md-6">
-            <button type="button" class="addressBackBtn" data-back-to-addresses="${addressBookUrl}">
+            <button type="button" class="addressBackBtn" data-back-to-addresses="${updateProfileUrl}">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </button>
             <span class="label">${headline}</span>
@@ -30,7 +30,7 @@
     <div class="container-lg col-md-6">
         <div class="account-section-content">
             <div class="account-section-form">
-                <address:addressFormSelector supportedCountries="${countries}" regions="${regions}" cancelUrl="/my-account/address-book" addressBook="true" />
+                <address:addressFormSelector supportedCountries="${countries}" regions="${regions}" cancelUrl="/my-account/update-profile" addressBook="true" />
             </div>
         </div>
     </div>
