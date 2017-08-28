@@ -32,14 +32,14 @@
 					<formElement:formInputBox idKey="profile.lastName"
 						labelKey="profile.lastName" path="lastName" inputCSS="text"
 						mandatory="true" />
-					
+
 					<formElement:formCheckbox idKey="profile.isShadow"
 						labelKey="profile.isShadow" path="isShadow" mandatory="false" />
-						
 
-					<formElement:formTextArea idKey="profile.notes"
-						labelKey="profile.notes" path="notes" mandatory="false" />
-						 
+
+					<formElement:formTextArea idKey="profile.note"
+						labelKey="profile.note" path="note" mandatory="false" />
+
 					<div class="row">
 						<div class="col-sm-6 col-sm-push-6">
 							<div class="accountActions">
@@ -65,16 +65,25 @@
 						</div>
 					</div>
 				</form:form>
-				
+				<div class="back-link border">
+					<div class="row">
+						<div class="container-lg col-md-6">
+							<span class="label">${headline}</span>
+						</div>
+					</div>
+				</div>
+				<div style="padding-top: 5%; padding-bottom: 5%;">
+					<p>
+						<b>Le tue note</b>
+					</p>
+
+					<ul style="padding-bottom: 5%;">
+						<c:forEach var="comment" items="${comments}">
+							<li><p>${comment.description}</p></li>
+						</c:forEach>
+					</ul>
+				</div>
 			</div>
 		</div>
-		<ul>
-		
-			<c:forEach var="comment" items="${comments}">
-				<li><p>${comment}</p></li>
-			</c:forEach>
-		</ul>
-		  
-		
 	</div>
 </div>

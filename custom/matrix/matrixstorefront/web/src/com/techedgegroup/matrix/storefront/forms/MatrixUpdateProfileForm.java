@@ -7,7 +7,7 @@ import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateProfileForm;
 
 import java.util.List;
 
-import com.techedgegroup.matrix.core.model.NoteModel;
+import com.techedgegroup.matrix.facades.data.NoteData;
 
 
 /**
@@ -19,7 +19,7 @@ public class MatrixUpdateProfileForm extends UpdateProfileForm
 
 
 	private String note;
-	private List<NoteModel> notes;
+	private List<NoteData> notes;
 	private boolean isShadow = false;
 
 
@@ -45,7 +45,7 @@ public class MatrixUpdateProfileForm extends UpdateProfileForm
 	/**
 	 * @return the notes
 	 */
-	public List<NoteModel> getNotes()
+	public List<NoteData> getNotes()
 	{
 		return notes;
 	}
@@ -54,7 +54,7 @@ public class MatrixUpdateProfileForm extends UpdateProfileForm
 	 * @param notes
 	 *           the notes to set
 	 */
-	public void setNotes(final List<NoteModel> notes)
+	public void setNotes(final List<NoteData> notes)
 	{
 		this.notes = notes;
 	}

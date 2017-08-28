@@ -174,15 +174,14 @@
 		<property name="orderEntryConverter" ref="orderEntryConverter" />
 		<property name="priceDataFactory" ref="priceDataFactory" />
 	</bean>
-	
-	<alias name="defaultCustomerReversePopulator" alias="customerReversePopulator"/>
-	<bean id="defaultCustomerReversePopulator"
-			class="de.hybris.platform.commercefacades.user.converters.populator.CustomerReversePopulator">
-		<property name="commonI18NService" ref="commonI18NService"/>
-		<property name="customerNameStrategy" ref="customerNameStrategy"/>
-		<property name="addressReversePopulator" ref="addressReversePopulator"/>
-		<property name="modelService" ref="modelService"/>
-		<property name="userService" ref="userService"/>
+
+	<alias name="defaultCustomerReversePopulator" alias="customerReversePopulator" />
+	<bean id="defaultCustomerReversePopulator" class="de.hybris.platform.commercefacades.user.converters.populator.CustomerReversePopulator">
+		<property name="commonI18NService" ref="commonI18NService" />
+		<property name="customerNameStrategy" ref="customerNameStrategy" />
+		<property name="addressReversePopulator" ref="addressReversePopulator" />
+		<property name="modelService" ref="modelService" />
+		<property name="userService" ref="userService" />
 	</bean>
 
 	<bean id="orderPartiallyCanceledEmailContext" class="com.techedgegroup.matrix.facades.process.email.context.OrderPartiallyCanceledEmailContext"
@@ -207,35 +206,46 @@
 	<bean id="genderData" class="com.techedgegroup.matrix.facades.product.data.GenderData" scope="prototype" />
 
 	
-	<!-- <alias name="matrixDefaultCustomerPopulator" alias="matrixCustomerPopulator"/>
-	<bean id="matrixDefaultCustomerPopulator"
-			class="com.techedgegroup.matrix.facades.user.converters.populator.MatrixCustomerPopulator">
-		<property name="currencyConverter" ref="currencyConverter"/>
-		<property name="languageConverter" ref="languageConverter"/>
-		<property name="customerNameStrategy" ref="customerNameStrategy"/>
-	</bean>
-	<alias name="matrixDefaultCustomerConverter" alias="matrixCustomerConverter"/>
-	<bean id="matrixDefaultCustomerConverter" parent="abstractPopulatingConverter">
-		<property name="targetClass" value="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+	<alias name="defaultNotePopulator" alias="notePopulator"/>
+	<bean id="defaultNotePopulator"
+			class="com.techedgegroup.matrix.facades.populators.NotePopulator"
+			/>
+
+	<alias name="defaultNoteConverter" alias="noteConverter"/>
+	<bean id="defaultNoteConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="com.techedgegroup.matrix.facades.data.NoteData"/>
 		<property name="populators">
 			<list>
-				<ref bean="matrixCustomerPopulator"/>
+				<ref bean="notePopulator"/>
 			</list>
 		</property>
 	</bean>
-	<alias name="matrixDefaultCustomerFacade" alias="matrixCustomerFacade" />
-	<bean id="matrixDefaultCustomerFacade" class="com.techedgegroup.matrix.facades.customer.impl.MatrixDefaultCustomerFacade">
-		<property name="modelService" ref="modelService"/>		
-		<property name="matrixCustomerReversePopulator" ref="customerReversePopulator" />
-	</bean> -->
-	<alias name="matrixDefaultCustomerFacade" alias="matrixCustomerFacade"/>
-	<bean id="matrixDefaultCustomerFacade" class="com.techedgegroup.matrix.facades.customer.impl.MatrixDefaultCustomerFacade"
-			>
-		<property name="userService" ref="userService"/>		
-		<property name="customerConverter" ref="customerConverter"/>
-		
+	 <alias name="defaultMatrixCustomerPopulator" alias="customerPopulator" />
+	<bean id="defaultMatrixCustomerPopulator" class="com.techedgegroup.matrix.facades.user.converters.populator.MatrixCustomerPopulator"
+		parent="defaultCustomerPopulator">
+		 <property name="noteConverter" ref="defaultNoteConverter" ></property>
+	</bean>
+	
+	<alias name="defaultMatrixCustomerConverter" alias="customerConverter"/>
+	<bean id="defaultMatrixCustomerConverter" parent="defaultCustomerConverter">
+		<property name="targetClass" value="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+		<property name="populators">
+			<list>
+				<ref bean="defaultMatrixCustomerPopulator"/>
+			</list>
+		</property>
+	</bean>
+	
+	<alias name="defaultExtendedCustomerFacade" alias="customerFacade" />
+	<bean id="defaultExtendedCustomerFacade" class="com.techedgegroup.matrix.facades.facade.impl.DefaultExtendedCustomerFacade"
+		parent="defaultCustomerFacade">
+		<property name="extendedCustomerAccountService" ref="defaultExtendedCustomerAccountService" />
+
 	</bean>
 	
 	
-	
+
+
+
+
 </beans>

@@ -21,7 +21,6 @@ import de.hybris.platform.acceleratorstorefrontcommons.controllers.util.GlobalMe
 import de.hybris.platform.acceleratorstorefrontcommons.forms.AddressForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateEmailForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdatePasswordForm;
-import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateProfileForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.AddressValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.EmailValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.PasswordValidator;
@@ -41,7 +40,6 @@ import de.hybris.platform.commercefacades.order.data.OrderHistoryData;
 import de.hybris.platform.commercefacades.product.ProductFacade;
 import de.hybris.platform.commercefacades.product.ProductOption;
 import de.hybris.platform.commercefacades.user.UserFacade;
-//import de.hybris.platform.storelocator.data.AddressData;
 import de.hybris.platform.commercefacades.user.data.AddressData;
 import de.hybris.platform.commercefacades.user.data.CountryData;
 import de.hybris.platform.commercefacades.user.data.CustomerData;
@@ -49,6 +47,7 @@ import de.hybris.platform.commercefacades.user.data.TitleData;
 import de.hybris.platform.commercefacades.user.exceptions.PasswordMismatchException;
 import de.hybris.platform.commerceservices.address.AddressVerificationDecision;
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
+import de.hybris.platform.commerceservices.search.pagedata.PageableData;
 import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import de.hybris.platform.commerceservices.util.ResponsiveUtils;
 import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
@@ -79,8 +78,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.techedgegroup.matrix.core.model.NoteModel;
-//import com.techedgegroup.matrix.facades.user.data.CustomerData;
+import com.techedgegroup.matrix.facades.data.NoteData;
+import com.techedgegroup.matrix.facades.facade.ExtendedCustomerFacade;
 import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
 import com.techedgegroup.matrix.storefront.forms.MatrixUpdateProfileForm;
 
@@ -149,9 +148,8 @@ public class AccountPageController extends AbstractSearchPageController
 	@Resource(name = "customerFacade")
 	private CustomerFacade customerFacade;
 
-	@Resource(name = "matrixCustomerFacade")
-	private CustomerFacade matrixCustomerFacade;
-
+	@Resource(name = "customerFacade")
+	private ExtendedCustomerFacade extendedCustomerFacade;
 
 	@Resource(name = "accountBreadcrumbBuilder")
 	private ResourceBreadcrumbBuilder accountBreadcrumbBuilder;
@@ -254,7 +252,7 @@ public class AccountPageController extends AbstractSearchPageController
 
 		final AddressForm addressForm = new AddressForm();
 		model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
-		for (final de.hybris.platform.commercefacades.user.data.AddressData addressData : userFacade.getAddressBook())
+		for (final AddressData addressData : userFacade.getAddressBook())
 		{
 			if (addressData.getId() != null && addressData.getId().equals(addressCode)
 					&& countryIsoCode.equals(addressData.getCountry().getIsocode()))
@@ -296,8 +294,7 @@ public class AccountPageController extends AbstractSearchPageController
 			@RequestParam(value = "sort", required = false) final String sortCode, final Model model) throws CMSItemNotFoundException
 	{
 		// Handle paged search results
-		final de.hybris.platform.commerceservices.search.pagedata.PageableData pageableData = createPageableData(page, 5, sortCode,
-				showMode);
+		final PageableData pageableData = createPageableData(page, 5, sortCode, showMode);
 		final SearchPageData<OrderHistoryData> searchPageData = orderFacade.getPagedOrderHistoryForStatuses(pageableData);
 		populateModel(model, searchPageData, showMode);
 
@@ -465,8 +462,6 @@ public class AccountPageController extends AbstractSearchPageController
 	}
 
 
-
-
 	/*
 	 * @RequestMapping(value = "/update-profile", method = RequestMethod.GET)
 	 *
@@ -490,6 +485,9 @@ public class AccountPageController extends AbstractSearchPageController
 	 * getViewForPage(model); }
 	 */
 
+	/*
+	 * author Pasquale
+	 */
 	@RequestMapping(value = "/update-profile", method = RequestMethod.GET)
 
 	@RequireHardLogIn
@@ -497,19 +495,17 @@ public class AccountPageController extends AbstractSearchPageController
 	{
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
 
-		final CustomerData customerData = matrixCustomerFacade.getCurrentCustomer();
+		final CustomerData customerData = extendedCustomerFacade.getCurrentCustomer();
 		final MatrixUpdateProfileForm matrixUpdateProfileForm = new MatrixUpdateProfileForm();
-		final List<NoteModel> comment = customerData.getNotes();
+		final List<NoteData> comments = customerData.getNotes();
+
 		matrixUpdateProfileForm.setTitleCode(customerData.getTitleCode());
 		matrixUpdateProfileForm.setFirstName(customerData.getFirstName());
 		matrixUpdateProfileForm.setLastName(customerData.getLastName());
 		matrixUpdateProfileForm.setIsShadow(customerData.isIsShadow());
 
-
-
 		model.addAttribute("matrixUpdateProfileForm", matrixUpdateProfileForm);
-
-		model.addAttribute("comment", comment);
+		model.addAttribute("comments", comments);
 
 		storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
@@ -519,25 +515,56 @@ public class AccountPageController extends AbstractSearchPageController
 		return getViewForPage(model);
 	}
 
+	/*
+	 * @RequestMapping(value = "/update-profile", method = RequestMethod.POST)
+	 *
+	 * @RequireHardLogIn public String updateProfile(final UpdateProfileForm updateProfileForm, final BindingResult
+	 * bindingResult, final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException {
+	 * getProfileValidator().validate(updateProfileForm, bindingResult);
+	 *
+	 * String returnAction = REDIRECT_TO_UPDATE_PROFILE; final CustomerData currentCustomerData =
+	 * customerFacade.getCurrentCustomer(); final CustomerData customerData = new CustomerData();
+	 * customerData.setTitleCode(updateProfileForm.getTitleCode());
+	 * customerData.setFirstName(updateProfileForm.getFirstName());
+	 * customerData.setLastName(updateProfileForm.getLastName()); customerData.setUid(currentCustomerData.getUid());
+	 * customerData.setDisplayUid(currentCustomerData.getDisplayUid());
+	 *
+	 * model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
+	 *
+	 * storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE)); setUpMetaDataForContentPage(model,
+	 * getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+	 *
+	 * if (bindingResult.hasErrors()) { returnAction = setErrorMessagesAndCMSPage(model, UPDATE_PROFILE_CMS_PAGE); } else {
+	 * try { customerFacade.updateProfile(customerData); GlobalMessages.addFlashMessage(redirectAttributes,
+	 * GlobalMessages.CONF_MESSAGES_HOLDER, "text.account.profile.confirmationUpdated", null);
+	 *
+	 * } catch (final DuplicateUidException e) { bindingResult.rejectValue("email",
+	 * "registration.error.account.exists.title"); returnAction = setErrorMessagesAndCMSPage(model,
+	 * UPDATE_PROFILE_CMS_PAGE); } }
+	 *
+	 *
+	 * model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE)); return
+	 * returnAction; }
+	 */
 
-
-
-
-
-
+	/*
+	 * author Pasquale
+	 */
 	@RequestMapping(value = "/update-profile", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String updateProfile(final UpdateProfileForm updateProfileForm, final BindingResult bindingResult, final Model model,
-			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
+	public String updateProfile(final MatrixUpdateProfileForm updateMatrixProfileForm, final BindingResult bindingResult,
+			final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
-		getProfileValidator().validate(updateProfileForm, bindingResult);
+		getProfileValidator().validate(updateMatrixProfileForm, bindingResult);
 
 		String returnAction = REDIRECT_TO_UPDATE_PROFILE;
-		final CustomerData currentCustomerData = customerFacade.getCurrentCustomer();
+		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
 		final CustomerData customerData = new CustomerData();
-		customerData.setTitleCode(updateProfileForm.getTitleCode());
-		customerData.setFirstName(updateProfileForm.getFirstName());
-		customerData.setLastName(updateProfileForm.getLastName());
+		customerData.setTitleCode(updateMatrixProfileForm.getTitleCode());
+		customerData.setFirstName(updateMatrixProfileForm.getFirstName());
+		customerData.setLastName(updateMatrixProfileForm.getLastName());
+		customerData.setIsShadow(updateMatrixProfileForm.getIsShadow());
+		customerData.setNote(updateMatrixProfileForm.getNote());
 		customerData.setUid(currentCustomerData.getUid());
 		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
 
@@ -554,7 +581,7 @@ public class AccountPageController extends AbstractSearchPageController
 		{
 			try
 			{
-				customerFacade.updateProfile(customerData);
+				extendedCustomerFacade.updateProfile(customerData);
 				GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.CONF_MESSAGES_HOLDER,
 						"text.account.profile.confirmationUpdated", null);
 
@@ -693,8 +720,7 @@ public class AccountPageController extends AbstractSearchPageController
 			return getViewForPage(model);
 		}
 
-		final de.hybris.platform.commercefacades.user.data.AddressData newAddress = addressDataUtil
-				.convertToVisibleAddressData(addressForm);
+		final AddressData newAddress = addressDataUtil.convertToVisibleAddressData(addressForm);
 
 		if (userFacade.isAddressBookEmpty())
 		{
@@ -752,11 +778,11 @@ public class AccountPageController extends AbstractSearchPageController
 		model.addAttribute(COUNTRY_DATA_ATTR, checkoutFacade.getDeliveryCountries());
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
 		model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
-		final List<de.hybris.platform.commercefacades.user.data.AddressData> addressBook = userFacade.getAddressBook();
+		final List<AddressData> addressBook = userFacade.getAddressBook();
 		model.addAttribute(ADDRESS_BOOK_EMPTY_ATTR, Boolean.valueOf(CollectionUtils.isEmpty(addressBook)));
 
 
-		for (final de.hybris.platform.commercefacades.user.data.AddressData addressData : addressBook)
+		for (final AddressData addressData : addressBook)
 		{
 			if (addressData.getId() != null && addressData.getId().equals(addressCode))
 			{

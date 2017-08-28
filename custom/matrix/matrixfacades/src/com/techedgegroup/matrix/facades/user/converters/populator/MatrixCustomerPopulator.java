@@ -3,65 +3,32 @@
  */
 package com.techedgegroup.matrix.facades.user.converters.populator;
 
-import de.hybris.platform.commercefacades.storesession.data.CurrencyData;
-import de.hybris.platform.commercefacades.storesession.data.LanguageData;
+import de.hybris.platform.commercefacades.user.converters.populator.CustomerPopulator;
 import de.hybris.platform.commercefacades.user.data.CustomerData;
-import de.hybris.platform.commerceservices.strategies.CustomerNameStrategy;
-import de.hybris.platform.converters.Populator;
-import de.hybris.platform.core.model.c2l.CurrencyModel;
-import de.hybris.platform.core.model.c2l.LanguageModel;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.core.model.user.TitleModel;
-import de.hybris.platform.core.model.user.UserModel;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
+
+import com.techedgegroup.matrix.core.model.NoteModel;
+import com.techedgegroup.matrix.facades.data.NoteData;
 
 
 /**
  * @author pasquale
  *
  */
-public class MatrixCustomerPopulator implements Populator<CustomerModel, CustomerData>
+public class MatrixCustomerPopulator extends CustomerPopulator
 {
 
-	private Converter<CurrencyModel, CurrencyData> currencyConverter;
-	private Converter<LanguageModel, LanguageData> languageConverter;
-	private CustomerNameStrategy customerNameStrategy;
 
-	protected Converter<CurrencyModel, CurrencyData> getCurrencyConverter()
-	{
-		return currencyConverter;
-	}
+	private Converter<NoteModel, NoteData> noteConverter;
 
-	@Required
-	public void setCurrencyConverter(final Converter<CurrencyModel, CurrencyData> currencyConverter)
-	{
-		this.currencyConverter = currencyConverter;
-	}
-
-	protected Converter<LanguageModel, LanguageData> getLanguageConverter()
-	{
-		return languageConverter;
-	}
-
-	@Required
-	public void setLanguageConverter(final Converter<LanguageModel, LanguageData> languageConverter)
-	{
-		this.languageConverter = languageConverter;
-	}
-
-	protected CustomerNameStrategy getCustomerNameStrategy()
-	{
-		return customerNameStrategy;
-	}
-
-	@Required
-	public void setCustomerNameStrategy(final CustomerNameStrategy customerNameStrategy)
-	{
-		this.customerNameStrategy = customerNameStrategy;
-	}
 
 	@Override
 	public void populate(final CustomerModel source, final CustomerData target)
@@ -77,6 +44,13 @@ public class MatrixCustomerPopulator implements Populator<CustomerModel, Custome
 		{
 			target.setLanguage(getLanguageConverter().convert(source.getSessionLanguage()));
 		}
+		/*
+		 * if (source.getNotes() != null) {
+		 * 
+		 * //target.setNotes(getNoteConverter().convert(source.getNotes()));
+		 * target.setNote(getNoteConverter().convert(source.getNotes().get(0)).getDescription()); }
+		 */
+
 
 		final String[] names = getCustomerNameStrategy().splitName(source.getName());
 		if (names != null)
@@ -90,26 +64,50 @@ public class MatrixCustomerPopulator implements Populator<CustomerModel, Custome
 		{
 			target.setTitleCode(title.getCode());
 		}
+		final List<NoteModel> notesListModel = source.getNotes();
+		final List<NoteData> notesListData = new ArrayList<NoteData>();
+		NoteData noteData;
 
-		target.setName(source.getName());
+		if (!notesListModel.isEmpty())
+		{
+			for (final NoteModel n : notesListModel)
+			{
+				noteData = new NoteData();
+				noteData.setCode(n.getCode());
+				noteData.setDescription(n.getDescription());
+				notesListData.add(noteData);
+			}
+			target.setNotes(notesListData);
+
+		}
+		{
+			target.setName(source.getName());
+		}
 		setUid(source, target);
 	}
 
-	protected void setUid(final UserModel source, final CustomerData target)
+
+
+
+
+	/**
+	 * @param noteConverter
+	 *           the noteConverter to set
+	 */
+	@Required
+	public void setNoteConverter(final Converter<NoteModel, NoteData> noteConverter)
 	{
-		target.setUid(source.getUid());
-		if (source instanceof CustomerModel)
-		{
-			final CustomerModel customer = (CustomerModel) source;
-			if (isOriginalUidAvailable(customer))
-			{
-				target.setDisplayUid(customer.getOriginalUid());
-			}
-		}
+		this.noteConverter = noteConverter;
 	}
 
-	protected boolean isOriginalUidAvailable(final CustomerModel source)
+	/**
+	 * @return the noteConverter
+	 */
+	protected Converter<NoteModel, NoteData> getNoteConverter()
 	{
-		return source.getOriginalUid() != null;
+		return noteConverter;
 	}
+
+
+
 }
