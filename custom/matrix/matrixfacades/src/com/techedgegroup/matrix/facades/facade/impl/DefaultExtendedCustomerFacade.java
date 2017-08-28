@@ -46,15 +46,15 @@ public class DefaultExtendedCustomerFacade extends DefaultCustomerFacade impleme
 	/*
 	 * @Override public void updateProfile(final ExtendedCustomerData extendedCustomerData) throws DuplicateUidException {
 	 * //validateDataBeforeUpdate(extendedCustomerData);
-	 * 
+	 *
 	 * final String address = extendedCustomerData.getAddress(); final String city = extendedCustomerData.getTown(); final
 	 * String posteCode = extendedCustomerData.getpCode(); final String phoneNumber = extendedCustomerData.getNumber();
 	 * final CustomerModel customer = getCurrentSessionCustomer();
 	 * customer.setOriginalUid(extendedCustomerData.getDisplayUid());
 	 * getExtendedCustomerAccountService().updateProfile(customer, address, city, posteCode, phoneNumber,
 	 * extendedCustomerData.getUid());
-	 * 
-	 * 
+	 *
+	 *
 	 * }
 	 */
 

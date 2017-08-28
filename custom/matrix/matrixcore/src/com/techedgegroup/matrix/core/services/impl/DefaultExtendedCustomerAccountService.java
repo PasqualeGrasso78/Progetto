@@ -79,6 +79,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	}
 
 
+	@Override
 	public void updateProfile(final CustomerModel customerModel, final String titleCode, final String name, final String login,
 			final Boolean shadowCustomer, final String notes) throws DuplicateUidException
 	{
@@ -106,13 +107,13 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	/*
 	 * public void updateProfile(final CustomerModel customerModel, final String address, final String city, final String
 	 * postalCode, final String phoneNumber, final String login) {
-	 * 
+	 *
 	 * validateParameterNotNullStandardMessage("customerModel", customerModel);
 	 *
 	 * customerModel.setUid(login); customerModel.setName(name); if (StringUtils.isNotBlank(titleCode)) {
 	 * customerModel.setTitle(getUserService().getTitleForCode(titleCode)); } else { customerModel.setTitle(null); }
 	 * internalSaveCustomer(customerModel);
-	 * 
+	 *
 	 * }
 	 */
 
