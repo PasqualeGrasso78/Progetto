@@ -507,11 +507,15 @@ public class AccountPageController extends AbstractSearchPageController
 		model.addAttribute("matrixUpdateProfileForm", matrixUpdateProfileForm);
 		model.addAttribute("comments", comments);
 
+		model.addAttribute(ADDRESS_DATA_ATTR, userFacade.getAddressBook());
+
 		storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
 
+		//testo visualizza percorso in alto e informazioni relativo ai metadati
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
+
 		return getViewForPage(model);
 	}
 
@@ -595,6 +599,7 @@ public class AccountPageController extends AbstractSearchPageController
 
 
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
+
 		return returnAction;
 	}
 
@@ -611,6 +616,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs("text.account.profile.updatePasswordForm"));
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
+
+
 		return getViewForPage(model);
 	}
 
@@ -714,6 +721,7 @@ public class AccountPageController extends AbstractSearchPageController
 		if (bindingResult.hasErrors())
 		{
 			GlobalMessages.addErrorMessage(model, FORM_GLOBAL_ERROR);
+
 			storeCmsPageInModel(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 			setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 			setUpAddressFormAfterError(addressForm, model);
@@ -754,7 +762,8 @@ public class AccountPageController extends AbstractSearchPageController
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.added",
 				null);
 
-		return REDIRECT_TO_EDIT_ADDRESS_PAGE + newAddress.getId();
+		//REDIRECT_TO_EDIT_ADDRESS_PAGE + newAddress.getId()
+		return REDIRECT_TO_UPDATE_PROFILE;
 	}
 
 	protected void setUpAddressFormAfterError(final AddressForm addressForm, final Model model)
@@ -804,7 +813,7 @@ public class AccountPageController extends AbstractSearchPageController
 				break;
 			}
 		}
-
+		//pagina a cui punta ---ADD_EDIT_ADDRESS_CMS_PAGE
 		storeCmsPageInModel(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
 
@@ -879,7 +888,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.updated",
 				null);
-		return REDIRECT_TO_EDIT_ADDRESS_PAGE + newAddress.getId();
+		//modificato + newAddress.getId()
+		return REDIRECT_TO_UPDATE_PROFILE;
 	}
 
 	@RequestMapping(value = "/select-suggested-address", method = RequestMethod.POST)
@@ -921,7 +931,7 @@ public class AccountPageController extends AbstractSearchPageController
 		userFacade.removeAddress(addressData);
 
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.removed");
-		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
+		return REDIRECT_TO_UPDATE_PROFILE;
 	}
 
 	@RequestMapping(value = "/set-default-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method = RequestMethod.GET)
@@ -935,7 +945,7 @@ public class AccountPageController extends AbstractSearchPageController
 		userFacade.setDefaultAddress(addressData);
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER,
 				"account.confirmation.default.address.changed");
-		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
+		return REDIRECT_TO_UPDATE_PROFILE;
 	}
 
 	@RequestMapping(value = "/payment-details", method = RequestMethod.GET)

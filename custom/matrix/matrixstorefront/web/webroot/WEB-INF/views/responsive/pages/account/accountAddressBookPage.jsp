@@ -6,9 +6,9 @@
 
 <spring:htmlEscape defaultHtmlEscape="true" />
 
-<c:set var="noBorder" value="" />
+<c:set var="noBorder" value=""/>
 <c:if test="${not empty addressData}">
-	<c:set var="noBorder" value="no-border" />
+    <c:set var="noBorder" value="no-border"/>
 </c:if>
 
 <div class="account-section-header ${noBorder}">
