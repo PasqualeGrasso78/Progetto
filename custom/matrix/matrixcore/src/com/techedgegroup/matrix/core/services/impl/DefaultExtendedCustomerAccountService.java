@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.collect.Lists;
 import com.techedgegroup.matrix.core.model.NoteModel;
 import com.techedgegroup.matrix.core.services.ExtendedCustomerAccountService;
 
@@ -30,7 +31,7 @@ import com.techedgegroup.matrix.core.services.ExtendedCustomerAccountService;
 public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccountService implements ExtendedCustomerAccountService
 {
 
-	private List<NoteModel> note;
+
 
 	@Resource(name = "modelService")
 	ModelService modelService;
@@ -78,7 +79,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 
 	}
 
-
+	@Deprecated
 	@Override
 	public void updateProfile(final CustomerModel customerModel, final String titleCode, final String name, final String login,
 			final Boolean shadowCustomer, final String notes) throws DuplicateUidException
@@ -117,6 +118,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	 * }
 	 */
 
+	@Override
 	public void addNewNote(final CustomerModel customerModel, final String note, final Boolean shadowCustomer)
 	{
 		final NoteModel newNotes = modelService.create(NoteModel.class);
@@ -124,9 +126,12 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 		newNotes.setCode(UUID.randomUUID().toString());
 
 		final List<NoteModel> notesList = customerModel.getNotes();
-		notesList.add(newNotes);
+		final List<NoteModel> note2 = Lists.newArrayList(notesList);
 
-		customerModel.setNotes(notesList);
+
+		note2.add(newNotes);
+
+		customerModel.setNotes(note2);
 		customerModel.setShadowCustomer(shadowCustomer);
 	}
 

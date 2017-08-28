@@ -45,9 +45,7 @@
 		labelKey="register.isShadow" path="isShadow" mandatory="false" />
 	<formElement:formTextArea idKey="register.notes"
 		labelKey="register.notes" path="notes" mandatory="false" />
-		<!--<form:textarea idKey="register.notes"
-		labelKey="register.notes" path="notes" mandatory="false" style="width:100%;" />-->
-	
+		
 
 
 

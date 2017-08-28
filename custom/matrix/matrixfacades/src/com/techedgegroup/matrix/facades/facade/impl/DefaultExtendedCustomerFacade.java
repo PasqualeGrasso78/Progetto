@@ -3,6 +3,7 @@ package com.techedgegroup.matrix.facades.facade.impl;
 import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParameterNotNullStandardMessage;
 
 import de.hybris.platform.commercefacades.customer.impl.DefaultCustomerFacade;
+import de.hybris.platform.commercefacades.user.data.CustomerData;
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.core.model.user.TitleModel;
@@ -42,6 +43,26 @@ public class DefaultExtendedCustomerFacade extends DefaultCustomerFacade impleme
 		newCustomer.setSessionCurrency(getCommonI18NService().getCurrentCurrency());
 		getExtendedCustomerAccountService().register(newCustomer, registerData.getPassword(), registerData.getShadowCustomer(),
 				registerData.getNotes());
+	}
+
+	@Override
+	public CustomerData getCurrentCustomer()
+	{
+		return getCustomerConverter().convert(getCurrentUser());
+	}
+
+	@Override
+	public void updateProfile(final CustomerData customerData) throws DuplicateUidException
+	{
+		validateDataBeforeUpdate(customerData);
+
+		final String name = getCustomerNameStrategy().getName(customerData.getFirstName(), customerData.getLastName());
+		final Boolean isShadow = Boolean.valueOf(customerData.isIsShadow());
+		final CustomerModel customer = getCurrentSessionCustomer();
+		customer.setOriginalUid(customerData.getDisplayUid());
+		getExtendedCustomerAccountService().updateProfile(customer, customerData.getTitleCode(), name, customerData.getUid(),
+				isShadow, customerData.getNote());
+
 	}
 	/*
 	 * @Override public void updateProfile(final ExtendedCustomerData extendedCustomerData) throws DuplicateUidException {

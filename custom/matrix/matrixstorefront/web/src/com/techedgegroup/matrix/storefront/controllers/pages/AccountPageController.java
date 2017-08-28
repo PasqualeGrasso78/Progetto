@@ -21,7 +21,6 @@ import de.hybris.platform.acceleratorstorefrontcommons.controllers.util.GlobalMe
 import de.hybris.platform.acceleratorstorefrontcommons.forms.AddressForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateEmailForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdatePasswordForm;
-import de.hybris.platform.acceleratorstorefrontcommons.forms.UpdateProfileForm;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.AddressValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.EmailValidator;
 import de.hybris.platform.acceleratorstorefrontcommons.forms.validation.PasswordValidator;
@@ -79,7 +78,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.techedgegroup.matrix.facades.data.NoteData;
+import com.techedgegroup.matrix.facades.facade.ExtendedCustomerFacade;
 import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
+import com.techedgegroup.matrix.storefront.forms.MatrixUpdateProfileForm;
 
 
 /**
@@ -146,9 +148,8 @@ public class AccountPageController extends AbstractSearchPageController
 	@Resource(name = "customerFacade")
 	private CustomerFacade customerFacade;
 
-	/*
-	 * @Resource(name = "extendedCustomerFacade") private ExtendedCustomerFacade extendedCustomerFacade;
-	 */
+	@Resource(name = "customerFacade")
+	private ExtendedCustomerFacade extendedCustomerFacade;
 
 	@Resource(name = "accountBreadcrumbBuilder")
 	private ResourceBreadcrumbBuilder accountBreadcrumbBuilder;
@@ -461,20 +462,50 @@ public class AccountPageController extends AbstractSearchPageController
 	}
 
 
+	/*
+	 * @RequestMapping(value = "/update-profile", method = RequestMethod.GET)
+	 *
+	 * @RequireHardLogIn public String editProfile(final Model model) throws CMSItemNotFoundException {
+	 * model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
+	 *
+	 * final CustomerData customerData = customerFacade.getCurrentCustomer(); final UpdateProfileForm updateProfileForm =
+	 * new UpdateProfileForm();
+	 *
+	 * updateProfileForm.setTitleCode(customerData.getTitleCode());
+	 * updateProfileForm.setFirstName(customerData.getFirstName());
+	 * updateProfileForm.setLastName(customerData.getLastName());
+	 *
+	 * model.addAttribute("updateProfileForm", updateProfileForm);
+	 *
+	 * storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE)); setUpMetaDataForContentPage(model,
+	 * getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+	 *
+	 * model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
+	 * model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW); return
+	 * getViewForPage(model); }
+	 */
+
+	/*
+	 * author Pasquale
+	 */
 	@RequestMapping(value = "/update-profile", method = RequestMethod.GET)
+
 	@RequireHardLogIn
 	public String editProfile(final Model model) throws CMSItemNotFoundException
 	{
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
 
-		final CustomerData customerData = customerFacade.getCurrentCustomer();
-		final UpdateProfileForm updateProfileForm = new UpdateProfileForm();
+		final CustomerData customerData = extendedCustomerFacade.getCurrentCustomer();
+		final MatrixUpdateProfileForm matrixUpdateProfileForm = new MatrixUpdateProfileForm();
+		final List<NoteData> comments = customerData.getNotes();
 
-		updateProfileForm.setTitleCode(customerData.getTitleCode());
-		updateProfileForm.setFirstName(customerData.getFirstName());
-		updateProfileForm.setLastName(customerData.getLastName());
+		matrixUpdateProfileForm.setTitleCode(customerData.getTitleCode());
+		matrixUpdateProfileForm.setFirstName(customerData.getFirstName());
+		matrixUpdateProfileForm.setLastName(customerData.getLastName());
+		matrixUpdateProfileForm.setIsShadow(customerData.isIsShadow());
 
-		model.addAttribute("updateProfileForm", updateProfileForm);
+		model.addAttribute("matrixUpdateProfileForm", matrixUpdateProfileForm);
+		model.addAttribute("comments", comments);
 
 		model.addAttribute(ADDRESS_DATA_ATTR, userFacade.getAddressBook());
 
@@ -488,19 +519,56 @@ public class AccountPageController extends AbstractSearchPageController
 		return getViewForPage(model);
 	}
 
+	/*
+	 * @RequestMapping(value = "/update-profile", method = RequestMethod.POST)
+	 *
+	 * @RequireHardLogIn public String updateProfile(final UpdateProfileForm updateProfileForm, final BindingResult
+	 * bindingResult, final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException {
+	 * getProfileValidator().validate(updateProfileForm, bindingResult);
+	 *
+	 * String returnAction = REDIRECT_TO_UPDATE_PROFILE; final CustomerData currentCustomerData =
+	 * customerFacade.getCurrentCustomer(); final CustomerData customerData = new CustomerData();
+	 * customerData.setTitleCode(updateProfileForm.getTitleCode());
+	 * customerData.setFirstName(updateProfileForm.getFirstName());
+	 * customerData.setLastName(updateProfileForm.getLastName()); customerData.setUid(currentCustomerData.getUid());
+	 * customerData.setDisplayUid(currentCustomerData.getDisplayUid());
+	 *
+	 * model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
+	 *
+	 * storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE)); setUpMetaDataForContentPage(model,
+	 * getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+	 *
+	 * if (bindingResult.hasErrors()) { returnAction = setErrorMessagesAndCMSPage(model, UPDATE_PROFILE_CMS_PAGE); } else {
+	 * try { customerFacade.updateProfile(customerData); GlobalMessages.addFlashMessage(redirectAttributes,
+	 * GlobalMessages.CONF_MESSAGES_HOLDER, "text.account.profile.confirmationUpdated", null);
+	 *
+	 * } catch (final DuplicateUidException e) { bindingResult.rejectValue("email",
+	 * "registration.error.account.exists.title"); returnAction = setErrorMessagesAndCMSPage(model,
+	 * UPDATE_PROFILE_CMS_PAGE); } }
+	 *
+	 *
+	 * model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE)); return
+	 * returnAction; }
+	 */
+
+	/*
+	 * author Pasquale
+	 */
 	@RequestMapping(value = "/update-profile", method = RequestMethod.POST)
 	@RequireHardLogIn
-	public String updateProfile(final UpdateProfileForm updateProfileForm, final BindingResult bindingResult, final Model model,
-			final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
+	public String updateProfile(final MatrixUpdateProfileForm updateMatrixProfileForm, final BindingResult bindingResult,
+			final Model model, final RedirectAttributes redirectAttributes) throws CMSItemNotFoundException
 	{
-		getProfileValidator().validate(updateProfileForm, bindingResult);
+		getProfileValidator().validate(updateMatrixProfileForm, bindingResult);
 
 		String returnAction = REDIRECT_TO_UPDATE_PROFILE;
-		final CustomerData currentCustomerData = customerFacade.getCurrentCustomer();
+		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
 		final CustomerData customerData = new CustomerData();
-		customerData.setTitleCode(updateProfileForm.getTitleCode());
-		customerData.setFirstName(updateProfileForm.getFirstName());
-		customerData.setLastName(updateProfileForm.getLastName());
+		customerData.setTitleCode(updateMatrixProfileForm.getTitleCode());
+		customerData.setFirstName(updateMatrixProfileForm.getFirstName());
+		customerData.setLastName(updateMatrixProfileForm.getLastName());
+		customerData.setIsShadow(updateMatrixProfileForm.getIsShadow());
+		customerData.setNote(updateMatrixProfileForm.getNote());
 		customerData.setUid(currentCustomerData.getUid());
 		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
 
@@ -517,7 +585,7 @@ public class AccountPageController extends AbstractSearchPageController
 		{
 			try
 			{
-				customerFacade.updateProfile(customerData);
+				extendedCustomerFacade.updateProfile(customerData);
 				GlobalMessages.addFlashMessage(redirectAttributes, GlobalMessages.CONF_MESSAGES_HOLDER,
 						"text.account.profile.confirmationUpdated", null);
 
@@ -534,7 +602,6 @@ public class AccountPageController extends AbstractSearchPageController
 
 		return returnAction;
 	}
-
 
 	@RequestMapping(value = "/update-password", method = RequestMethod.GET)
 	@RequireHardLogIn
