@@ -31,4 +31,11 @@ public interface ExtendedCustomerFacade
 	public void updateProfile(final CustomerData customerData) throws DuplicateUidException;
 
 
+	/**
+	 * @param customerData
+	 * @throws DuplicateUidException
+	 */
+	void addNewNote(CustomerData customerData) throws DuplicateUidException;
+
+
 }

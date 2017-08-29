@@ -3,6 +3,7 @@
  */
 package com.techedgegroup.matrix.core.services.impl;
 
+import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParameterNotNull;
 import static de.hybris.platform.servicelayer.util.ServicesUtil.validateParameterNotNullStandardMessage;
 
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
@@ -11,6 +12,7 @@ import de.hybris.platform.commerceservices.event.RegisterEvent;
 import de.hybris.platform.core.model.user.CustomerModel;
 import de.hybris.platform.servicelayer.model.ModelService;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -105,19 +107,6 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 		internalSaveCustomer(customerModel);
 	}
 
-	/*
-	 * public void updateProfile(final CustomerModel customerModel, final String address, final String city, final String
-	 * postalCode, final String phoneNumber, final String login) {
-	 *
-	 * validateParameterNotNullStandardMessage("customerModel", customerModel);
-	 *
-	 * customerModel.setUid(login); customerModel.setName(name); if (StringUtils.isNotBlank(titleCode)) {
-	 * customerModel.setTitle(getUserService().getTitleForCode(titleCode)); } else { customerModel.setTitle(null); }
-	 * internalSaveCustomer(customerModel);
-	 *
-	 * }
-	 */
-
 	@Override
 	public void addNewNote(final CustomerModel customerModel, final String note, final Boolean shadowCustomer)
 	{
@@ -133,6 +122,64 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 
 		customerModel.setNotes(note2);
 		customerModel.setShadowCustomer(shadowCustomer);
+	}
+
+	@Override
+	public void addNewNote(final CustomerModel customer, final String uid, final Boolean isShadow, final String note)
+	{
+		customer.setUid(uid);
+		addNewNote(customer, note, isShadow);
+		try
+		{
+			internalSaveCustomer(customer);
+		}
+		catch (final DuplicateUidException e)
+		{
+			// YTODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public List<NoteModel> getNoteEntries(final CustomerModel customerModel)
+	{
+		validateParameterNotNull(customerModel, "Customer model cannot be null");
+		final List<NoteModel> noteModels = new ArrayList<NoteModel>();
+
+		for (final NoteModel note : customerModel.getNotes())
+		{
+			noteModels.add(note);
+
+		}
+
+		return noteModels;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.techedgegroup.matrix.core.services.ExtendedCustomerAccountService#deleteAddressEntry(de.hybris.platform.core.
+	 * model.user.CustomerModel, com.techedgegroup.matrix.core.model.NoteModel)
+	 */
+	@Override
+	public void deleteAddressEntry(final CustomerModel customerModel, final NoteModel noteModel)
+	{
+		validateParameterNotNull(customerModel, "Customer model cannot be null");
+		validateParameterNotNull(noteModel, "Address model cannot be null");
+
+		if (customerModel.getNotes().contains(noteModel))
+		{
+
+			getModelService().remove(noteModel);
+			getModelService().refresh(customerModel);
+
+		}
+		else
+		{
+			throw new IllegalArgumentException(
+					"Note " + noteModel + " does not belong to the customer " + customerModel + " and will not be removed.");
+		}
+
 	}
 
 
