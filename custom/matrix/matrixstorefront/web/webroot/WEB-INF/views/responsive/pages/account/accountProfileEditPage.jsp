@@ -72,6 +72,18 @@
 
 	</div>
 </div>
+<div class="account-section-header ${noBorder}">
+	<spring:theme code="text.account.profile.updatePersonalNotes" />
+
+	<ycommerce:testId code="addressBook_addNewAddress_button">
+		<div class="account-section-header-add pull-right">
+			<a href="add-address"> <spring:theme
+					code="text.account.addressBook.addAddress" />
+			</a>
+		</div>
+	</ycommerce:testId>
+
+</div><%-- 
 <div class="row" style="margin-bottom: 3%">
 	<div class="account-section-header">
 		<div class="row">
@@ -84,6 +96,7 @@
 
 
 </div>
+--%>
 <%--<div class="row"style="padding-top:2%"> --%>
 <div class="row" style="margin-bottom: 3%">
 
