@@ -10,6 +10,7 @@
 <%@ attribute name="maxlength" required="false" type="java.lang.Integer"%>
 
 
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -25,7 +26,7 @@
 	</label>
 
 	<form:textarea cssClass="${areaCSS}" id="${idKey}" path="${path}" disabled="${disabled}" placeholder="${placeholder}"
-				   maxlength="${maxlength}"/>
+				   maxlength="${maxlength}" cssStyle="width:100%"/>
 
 
 </template:errorSpanField>

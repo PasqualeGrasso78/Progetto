@@ -39,10 +39,10 @@
 
 
 					<formElement:formTextArea idKey="profile.note"
-						labelKey="profile.note" path="note" mandatory="false" />
+						labelKey="profile.note" path="note" mandatory="false"/>
 
 
-					<div class="row">
+					<div class="row"> 
 						<div class="col-sm-6 col-sm-push-6">
 							<div class="accountActions">
 								<ycommerce:testId
@@ -71,16 +71,21 @@
 		</div>
 
 	</div>
-
-
+</div>
+<div class="row" style="margin-bottom: 3%">
 	<div class="account-section-header">
 		<div class="row">
 			<div class="container-lg col-md-6">
 				<spring:theme code="text.account.profile.updatePersonalNotes" />
+
 			</div>
 		</div>
 	</div>
-	
+
+
+</div>
+<%--<div class="row"style="padding-top:2%"> --%>
+<div class="row" style="margin-bottom: 3%">
 
 	<div>
 		<ul style="padding-bottom: 5%;">
