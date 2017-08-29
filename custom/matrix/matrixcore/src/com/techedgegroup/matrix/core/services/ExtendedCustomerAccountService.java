@@ -6,6 +6,10 @@ package com.techedgegroup.matrix.core.services;
 import de.hybris.platform.commerceservices.customer.DuplicateUidException;
 import de.hybris.platform.core.model.user.CustomerModel;
 
+import java.util.List;
+
+import com.techedgegroup.matrix.core.model.NoteModel;
+
 
 /**
  * @author alessio
@@ -35,15 +39,31 @@ public interface ExtendedCustomerAccountService
 	public void updateProfile(final CustomerModel customerModel, final String titleCode, final String name, final String login,
 			final Boolean shadowCustomer, final String notes) throws DuplicateUidException;
 
-	public void addNewNote(final CustomerModel customerModel, final String note, final Boolean shadowCustomer);
-
 	/**
 	 * @param customer
-	 * @param address
-	 * @param city
-	 * @param posteCode
-	 * @param phoneNumber
 	 * @param uid
+	 * @param isShadow
+	 * @param note
 	 */
-	//void updateProfile(CustomerModel customer, String address, String city, String posteCode, String phoneNumber, String uid);
+	void addNewNote(CustomerModel customer, String uid, Boolean isShadow, String note);
+
+	/**
+	 * @param customerModel
+	 * @param note
+	 * @param shadowCustomer
+	 */
+	void addNewNote(CustomerModel customerModel, String note, Boolean shadowCustomer);
+
+	/**
+	 * @param currentCustomer
+	 * @return
+	 */
+	List<NoteModel> getNoteEntries(CustomerModel currentCustomer);
+
+	/**
+	 * @param currentCustomer
+	 * @param noteModel
+	 */
+	void deleteAddressEntry(CustomerModel currentCustomer, NoteModel noteModel);
+
 }
