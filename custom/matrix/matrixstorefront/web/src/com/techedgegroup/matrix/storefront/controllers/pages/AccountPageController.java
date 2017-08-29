@@ -562,7 +562,7 @@ public class AccountPageController extends AbstractSearchPageController
 		getProfileValidator().validate(updateMatrixProfileForm, bindingResult);
 
 		String returnAction = REDIRECT_TO_UPDATE_PROFILE;
-		final CustomerData currentCustomerData = extendedCustomerFacadeciccio.getCurrentCustomer();
+		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
 		final CustomerData customerData = new CustomerData();
 		customerData.setTitleCode(updateMatrixProfileForm.getTitleCode());
 		customerData.setFirstName(updateMatrixProfileForm.getFirstName());
@@ -571,6 +571,9 @@ public class AccountPageController extends AbstractSearchPageController
 		customerData.setNote(updateMatrixProfileForm.getNote());
 		customerData.setUid(currentCustomerData.getUid());
 		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
+
+
+		/* conflitto */
 
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
 
