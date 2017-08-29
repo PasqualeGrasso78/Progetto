@@ -562,7 +562,7 @@ public class AccountPageController extends AbstractSearchPageController
 		getProfileValidator().validate(updateMatrixProfileForm, bindingResult);
 
 		String returnAction = REDIRECT_TO_UPDATE_PROFILE;
-		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
+		final CustomerData currentCustomerData = extendedCustomerFacadeciccio.getCurrentCustomer();
 		final CustomerData customerData = new CustomerData();
 		customerData.setTitleCode(updateMatrixProfileForm.getTitleCode());
 		customerData.setFirstName(updateMatrixProfileForm.getFirstName());
