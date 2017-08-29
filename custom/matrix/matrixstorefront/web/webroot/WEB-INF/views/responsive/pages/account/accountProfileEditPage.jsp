@@ -7,6 +7,10 @@
 <%@ taglib prefix="formElement"
 	tagdir="/WEB-INF/tags/responsive/formElement"%>
 <%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags"%>
+<%--Pasquale --%>
+
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <div class="account-section-header">
 	<div class="row">
@@ -39,10 +43,10 @@
 
 
 					<formElement:formTextArea idKey="profile.note"
-						labelKey="profile.note" path="note" mandatory="false"/>
+						labelKey="profile.note" path="note" mandatory="false" />
 
 
-					<div class="row"> 
+					<div class="row">
 						<div class="col-sm-6 col-sm-push-6">
 							<div class="accountActions">
 								<ycommerce:testId
@@ -72,32 +76,25 @@
 
 	</div>
 </div>
+
 <div class="account-section-header ${noBorder}">
 	<spring:theme code="text.account.profile.updatePersonalNotes" />
-
+	
 	<ycommerce:testId code="addressBook_addNewAddress_button">
 		<div class="account-section-header-add pull-right">
-			<a href="add-address"> <spring:theme
-					code="text.account.addressBook.addAddress" />
-			</a>
+			<a href="#" class="action-links removeAddressFromBookButton"
+									data-address-id="${fn:escapeXml(address.id)}"
+									data-popup-title="<spring:theme code="text.note.delete.popup.title" />">
+									
+									<spring:theme code="text.account.noteBook.addNote" />
+								</a>
+			<%--<a href="#"> <spring:theme code="text.account.noteBook.addNote" />
+			</a> --%>
 		</div>
 	</ycommerce:testId>
-
-</div><%-- 
-<div class="row" style="margin-bottom: 3%">
-	<div class="account-section-header">
-		<div class="row">
-			<div class="container-lg col-md-6">
-				<spring:theme code="text.account.profile.updatePersonalNotes" />
-
-			</div>
-		</div>
-	</div>
-
-
+	
 </div>
---%>
-<%--<div class="row"style="padding-top:2%"> --%>
+<%-- 
 <div class="row" style="margin-bottom: 3%">
 
 	<div>
@@ -108,7 +105,86 @@
 		</ul>
 	</div>
 </div>
+--%>
 
+
+
+<spring:htmlEscape defaultHtmlEscape="true" />
+<div class="account-addressbook account-list">
+	<c:if test="${empty comments}">
+		<div class="account-section-content content-empty">
+			<spring:theme code="text.account.noteBook.noSavedNotes" />
+		</div>
+	</c:if>
+
+	<c:if test="${not empty comments}">
+		<div class="account-cards card-select">
+			<div class="row">
+				<c:forEach items="${comments}" var="comment">
+					<div class="col-xs-12 col-sm-6 col-md-4 card">
+						<ul class="pull-left">
+							<li>${fn:escapeXml(comment.description)}</li>
+						</ul>
+						 <div class="account-cards-actions pull-left">
+							<%-- <ycommerce:testId code="addressBook_editAddress_button">
+								<a class="action-links"
+									href="edit-address/${fn:escapeXml(comment.code)}"> <span
+									class="glyphicon glyphicon-pencil"></span>
+								</a>
+							</ycommerce:testId>
+							--%>
+							<ycommerce:testId code="addressBook_removeAddress_button">
+								<a href="#" class="action-links removeAddressFromBookButton"
+									data-address-id="${fn:escapeXml(comment.code)}"
+									data-popup-title="<spring:theme code="text.note.delete.popup.title" />">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</ycommerce:testId>
+						</div>
+					</div>
+
+				</c:forEach>
+			</div>
+			<c:forEach items="${comments}" var="comment">
+				<div class="display-none">
+					<div id="popup_confirm_address_removal_${fn:escapeXml(comment.code)}"
+						class="account-address-removal-popup">
+						<div class="addressItem">
+							<spring:theme code="text.note.remove.following" />
+
+							<div class="address">
+								<strong> ${fn:escapeXml(comment.description)} </strong> 
+							</div>
+
+							<div class="modal-actions">
+								<div class="row">
+									<ycommerce:testId code="addressRemove_delete_button">
+										<div class="col-xs-12 col-sm-6 col-sm-push-6">
+											<a class="btn btn-primary btn-block"
+												data-address-id="${fn:escapeXml(comment.code)}"
+												href="remove-address/${fn:escapeXml(comment.code)}"> <spring:theme
+													code="text.note.delete" />
+											</a>
+										</div>
+									</ycommerce:testId>
+									<div class="col-xs-12 col-sm-6 col-sm-pull-6">
+										<a class="btn btn-default btn-block closeColorBox"
+											data-address-id="${fn:escapeXml(comment.code)}"> <spring:theme
+												code="text.button.cancel" />
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</c:if>
+</div>
+
+
+<%---agg Alessio --%>
 
 <div class="account-section-header ${noBorder}">
 	<spring:theme code="text.account.addressBook" />
@@ -123,16 +199,6 @@
 
 </div>
 
-
-<%---agg --%>
-
-<%@ page trimDirectiveWhitespaces="true"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="ycommerce" uri="http://hybris.com/tld/ycommercetags"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
-<spring:htmlEscape defaultHtmlEscape="true" />
 <div class="account-addressbook account-list">
 	<c:if test="${empty addressData}">
 		<div class="account-section-content content-empty">
@@ -176,6 +242,7 @@
 									class="glyphicon glyphicon-pencil"></span>
 								</a>
 							</ycommerce:testId>
+							<%--Button remove address --%>
 							<ycommerce:testId code="addressBook_removeAddress_button">
 								<a href="#" class="action-links removeAddressFromBookButton"
 									data-address-id="${fn:escapeXml(address.id)}"

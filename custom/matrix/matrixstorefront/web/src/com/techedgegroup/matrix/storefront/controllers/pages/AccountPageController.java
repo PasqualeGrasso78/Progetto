@@ -121,6 +121,7 @@ public class AccountPageController extends AbstractSearchPageController
 	 */
 	private static final String ORDER_CODE_PATH_VARIABLE_PATTERN = "{orderCode:.*}";
 	private static final String ADDRESS_CODE_PATH_VARIABLE_PATTERN = "{addressCode:.*}";
+	private static final String NOTE_CODE_PATH_VARIABLE_PATTERN = "{noteCode:.*}";
 
 	// CMS Pages
 	private static final String ACCOUNT_CMS_PAGE = "account";
@@ -499,6 +500,7 @@ public class AccountPageController extends AbstractSearchPageController
 		final MatrixUpdateProfileForm matrixUpdateProfileForm = new MatrixUpdateProfileForm();
 		final List<NoteData> comments = customerData.getNotes();
 
+
 		matrixUpdateProfileForm.setTitleCode(customerData.getTitleCode());
 		matrixUpdateProfileForm.setFirstName(customerData.getFirstName());
 		matrixUpdateProfileForm.setLastName(customerData.getLastName());
@@ -677,6 +679,32 @@ public class AccountPageController extends AbstractSearchPageController
 		storeCmsPageInModel(model, getContentPageForLabelOrId(ADDRESS_BOOK_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADDRESS_BOOK_CMS_PAGE));
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_ADDRESS_BOOK));
+		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
+		return getViewForPage(model);
+	}/*
+	  * autor Pasquale
+	  */
+
+	@RequestMapping(value = "/add-note", method = RequestMethod.GET)
+	@RequireHardLogIn
+	public String addNote(final Model model) throws CMSItemNotFoundException
+	{
+		model.addAttribute(COUNTRY_DATA_ATTR, checkoutFacade.getDeliveryCountries());
+		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
+		final AddressForm addressForm = getPreparedAddressForm();
+		model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
+		model.addAttribute(ADDRESS_BOOK_EMPTY_ATTR, Boolean.valueOf(userFacade.isAddressBookEmpty()));
+		model.addAttribute(IS_DEFAULT_ADDRESS_ATTR, Boolean.FALSE);
+		storeCmsPageInModel(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
+		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
+
+		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
+		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
+				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb("#",
+				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
+				null));
+		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		return getViewForPage(model);
 	}
@@ -922,6 +950,24 @@ public class AccountPageController extends AbstractSearchPageController
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.added");
 
 		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
+	}
+
+	/*
+	 * Delete note
+	 */
+	@RequestMapping(value = "/remove-address/" + NOTE_CODE_PATH_VARIABLE_PATTERN, method =
+	{ RequestMethod.GET, RequestMethod.POST })
+	@RequireHardLogIn
+	public String removeNote(@PathVariable("noteCode") final String noteCode, final RedirectAttributes redirectModel)
+	{
+		final NoteData noteData = new NoteData();
+
+		noteData.setCode(noteCode);
+
+		//userFacade.removeNote(noteData);
+
+		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.note.removed");
+		return REDIRECT_TO_UPDATE_PROFILE;
 	}
 
 	@RequestMapping(value = "/remove-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method =
