@@ -76,10 +76,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techedgegroup.matrix.facades.data.NoteData;
 import com.techedgegroup.matrix.facades.facade.ExtendedCustomerFacade;
+import com.techedgegroup.matrix.facades.facade.ExtendedDefaultUserFacade;
 import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
 import com.techedgegroup.matrix.storefront.forms.MatrixUpdateProfileForm;
 
@@ -113,7 +115,7 @@ public class AccountPageController extends AbstractSearchPageController
 	private static final String REDIRECT_TO_UPDATE_PROFILE = REDIRECT_PREFIX + "/my-account/update-profile";
 	private static final String REDIRECT_TO_PASSWORD_UPDATE_PAGE = REDIRECT_PREFIX + "/my-account/update-password";
 	private static final String REDIRECT_TO_ORDER_HISTORY_PAGE = REDIRECT_PREFIX + "/my-account/orders";
-
+	private static final String REDIRECT_TO_UPDATE_PROFILE_NOTE = "/my-account/update-profile";
 	/**
 	 * We use this suffix pattern because of an issue with Spring 3.1 where a Uri value is incorrectly extracted if it
 	 * contains on or more '.' characters. Please see https://jira.springsource.org/browse/SPR-6164 for a discussion on the
@@ -145,6 +147,9 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@Resource(name = "userFacade")
 	private UserFacade userFacade;
+
+	@Resource(name = "userFacade")
+	private ExtendedDefaultUserFacade extendedUserFacade;
 
 	@Resource(name = "customerFacade")
 	private CustomerFacade customerFacade;
@@ -498,7 +503,7 @@ public class AccountPageController extends AbstractSearchPageController
 
 		final CustomerData customerData = extendedCustomerFacade.getCurrentCustomer();
 		final MatrixUpdateProfileForm matrixUpdateProfileForm = new MatrixUpdateProfileForm();
-		final List<NoteData> comments = customerData.getNotes();
+		final List<NoteData> notes = customerData.getNotes();
 
 
 		matrixUpdateProfileForm.setTitleCode(customerData.getTitleCode());
@@ -507,7 +512,7 @@ public class AccountPageController extends AbstractSearchPageController
 		matrixUpdateProfileForm.setIsShadow(customerData.isIsShadow());
 
 		model.addAttribute("matrixUpdateProfileForm", matrixUpdateProfileForm);
-		model.addAttribute("comments", comments);
+		model.addAttribute("notes", notes);
 
 		model.addAttribute(ADDRESS_DATA_ATTR, userFacade.getAddressBook());
 
@@ -954,20 +959,25 @@ public class AccountPageController extends AbstractSearchPageController
 
 	/*
 	 * Delete note
+	 *
+	 * @RequestMapping(value = "/remove-note/" + NOTE_CODE_PATH_VARIABLE_PATTERN, method = { RequestMethod.GET,
+	 * RequestMethod.POST })
 	 */
-	@RequestMapping(value = "/remove-address/" + NOTE_CODE_PATH_VARIABLE_PATTERN, method =
-	{ RequestMethod.GET, RequestMethod.POST })
-	@RequireHardLogIn
-	public String removeNote(@PathVariable("noteCode") final String noteCode, final RedirectAttributes redirectModel)
+	@RequestMapping(value = "/remove-note", method = RequestMethod.GET)
+	@ResponseBody
+	public String removeNote(@RequestParam(value = "noteCode", required = true) final String noteCode,
+			final RedirectAttributes redirectModel)
 	{
 		final NoteData noteData = new NoteData();
 
 		noteData.setCode(noteCode);
 
-		//userFacade.removeNote(noteData);
+		extendedUserFacade.removeNote(noteData);
 
-		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.note.removed");
-		return REDIRECT_TO_UPDATE_PROFILE;
+
+
+		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.removed");
+		return REDIRECT_TO_UPDATE_PROFILE_NOTE;
 	}
 
 	@RequestMapping(value = "/remove-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method =

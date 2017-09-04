@@ -93,7 +93,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 
 		if (shadowCustomer)
 		{
-			addNewNote(customerModel, notes, shadowCustomer);
+			addNote(customerModel, notes, shadowCustomer);
 		}
 
 		if (StringUtils.isNotBlank(titleCode))
@@ -108,7 +108,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	}
 
 	@Override
-	public void addNewNote(final CustomerModel customerModel, final String note, final Boolean shadowCustomer)
+	public void addNote(final CustomerModel customerModel, final String note, final Boolean shadowCustomer)
 	{
 		final NoteModel newNotes = modelService.create(NoteModel.class);
 		newNotes.setDescription(note);
@@ -128,7 +128,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	public void addNewNote(final CustomerModel customer, final String uid, final Boolean isShadow, final String note)
 	{
 		customer.setUid(uid);
-		addNewNote(customer, note, isShadow);
+		addNote(customer, note, isShadow);
 		try
 		{
 			internalSaveCustomer(customer);
@@ -162,7 +162,7 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	 * model.user.CustomerModel, com.techedgegroup.matrix.core.model.NoteModel)
 	 */
 	@Override
-	public void deleteAddressEntry(final CustomerModel customerModel, final NoteModel noteModel)
+	public void deleteNoteEntry(final CustomerModel customerModel, final NoteModel noteModel)
 	{
 		validateParameterNotNull(customerModel, "Customer model cannot be null");
 		validateParameterNotNull(noteModel, "Address model cannot be null");

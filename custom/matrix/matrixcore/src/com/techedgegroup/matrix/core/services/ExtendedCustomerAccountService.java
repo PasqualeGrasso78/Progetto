@@ -52,7 +52,7 @@ public interface ExtendedCustomerAccountService
 	 * @param note
 	 * @param shadowCustomer
 	 */
-	void addNewNote(CustomerModel customerModel, String note, Boolean shadowCustomer);
+	void addNote(CustomerModel customerModel, String note, Boolean shadowCustomer);
 
 	/**
 	 * @param currentCustomer
@@ -64,6 +64,6 @@ public interface ExtendedCustomerAccountService
 	 * @param currentCustomer
 	 * @param noteModel
 	 */
-	void deleteAddressEntry(CustomerModel currentCustomer, NoteModel noteModel);
+	void deleteNoteEntry(CustomerModel currentCustomer, NoteModel noteModel);
 
 }

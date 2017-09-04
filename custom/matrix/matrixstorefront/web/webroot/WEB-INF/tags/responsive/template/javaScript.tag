@@ -40,7 +40,10 @@
 		<script type="text/javascript" src="${commonResourcePath}/js/jquery.waitforimages.min.js"></script>
 		<script type="text/javascript" src="${commonResourcePath}/js/jquery.slideviewer.custom.1.2.js"></script>
 		
-		<%-- Custom ACC JS --%>
+		<%-- Custom ACC JS Pasquale 
+		<script type="text/javascript" src="${commonResourcePath}/js/acc.note.js"></script>
+		<script type="text/javascript" src="${commonResourcePath}/js/acc.checkoutnote.js"></script>
+		--%><%-- Custom ACC JS --%>
 		
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.address.js"></script>
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.autocomplete.js"></script>
@@ -59,6 +62,7 @@
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.imagegallery.js"></script>
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.langcurrencyselector.js"></script>
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.minicart.js"></script>
+		
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.navigation.js"></script>
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.order.js"></script>
 		<script type="text/javascript" src="${commonResourcePath}/js/acc.paginationsort.js"></script>
