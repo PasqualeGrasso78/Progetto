@@ -30,6 +30,7 @@ public class MatrixCustomerPopulator extends CustomerPopulator
 	private Converter<NoteModel, NoteData> noteConverter;
 
 
+
 	@Override
 	public void populate(final CustomerModel source, final CustomerData target)
 	{
@@ -44,14 +45,6 @@ public class MatrixCustomerPopulator extends CustomerPopulator
 		{
 			target.setLanguage(getLanguageConverter().convert(source.getSessionLanguage()));
 		}
-		/*
-		 * if (source.getNotes() != null) {
-		 * 
-		 * //target.setNotes(getNoteConverter().convert(source.getNotes()));
-		 * target.setNote(getNoteConverter().convert(source.getNotes().get(0)).getDescription()); }
-		 */
-
-
 		final String[] names = getCustomerNameStrategy().splitName(source.getName());
 		if (names != null)
 		{
@@ -64,6 +57,13 @@ public class MatrixCustomerPopulator extends CustomerPopulator
 		{
 			target.setTitleCode(title.getCode());
 		}
+		final Boolean isShadow = source.getShadowCustomer();
+		if (isShadow != null)
+		{
+			target.setIsShadow(isShadow.booleanValue());
+
+		}
+
 		final List<NoteModel> notesListModel = source.getNotes();
 		final List<NoteData> notesListData = new ArrayList<NoteData>();
 		NoteData noteData;
@@ -80,6 +80,7 @@ public class MatrixCustomerPopulator extends CustomerPopulator
 			target.setNotes(notesListData);
 
 		}
+
 		{
 			target.setName(source.getName());
 		}

@@ -180,14 +180,13 @@
 			</c:forEach>
 		</div>
 		<c:forEach items="${notes}" var="note">
-			<div class="display-none">
+			<div id="test" class="display-none">
 			
-				<div id="popup_success_note_removal_${fn:escapeXml(note.code)}"
-					>
+				<div id="popup_success_note_removal_${fn:escapeXml(note.code)}">
 					<div class="addressItem">
 						
 
-						<div class="address"><p>
+						<div ><p>
 							<strong style="width:100%;"><spring:theme code="text.note.remove.success" /></strong><br/>
 							</p>
 							
@@ -340,4 +339,5 @@
 		</div>
 	</c:if>
 </div>
+
 
