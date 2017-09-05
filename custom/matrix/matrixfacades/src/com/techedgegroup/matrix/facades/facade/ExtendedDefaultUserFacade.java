@@ -29,9 +29,11 @@ public class ExtendedDefaultUserFacade extends DefaultUserFacade
 		final CustomerModel currentCustomer = getCurrentUserForCheckout();
 		for (final NoteModel noteModel : getExtendedCustomerAccountService().getNoteEntries(currentCustomer))
 		{
-			if (noteData.getCode().equals(noteModel.getPk()))
+			//if (noteData.getCode().equals(noteModel.getPk()))
+			if (noteData.getCode().equals(noteModel.getCode()))
 			{
-				getExtendedCustomerAccountService().deleteAddressEntry(currentCustomer, noteModel);
+				getExtendedCustomerAccountService().deleteNoteEntry(currentCustomer, noteModel);
+				break;
 			}
 
 

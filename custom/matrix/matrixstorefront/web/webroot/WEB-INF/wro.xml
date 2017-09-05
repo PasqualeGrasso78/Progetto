@@ -45,7 +45,11 @@
 		<js minimize="false">/_ui/responsive/common/js/jquery.tmpl-1.0.0pre.min.js</js>
 		<js minimize="false">/_ui/responsive/common/js/jquery.currencies.min.js</js>
 		
-		<!-- Custom ACC JS -->
+		
+		<!-- Pasquale 
+		<script type="text/javascript" src="${commonResourcePath}/js/acc.note.js"></script>
+		<script type="text/javascript" src="${commonResourcePath}/js/acc.checkoutnote.js"></script>
+		--><!-- Custom ACC JS -->
 		<js>/_ui/responsive/common/js/acc.address.js</js>
 		<js>/_ui/responsive/common/js/acc.autocomplete.js</js>
 		<js>/_ui/responsive/common/js/acc.carousel.js</js>
@@ -170,6 +174,7 @@
 		<js minimize="false">/_ui/desktop/common/js/jquery.bt-0.9.5-rc1.min.js</js>
 		<!-- PasswordStrength  -->
 		<js>/_ui/desktop/common/js/jquery.pstrength.custom-1.2.0.js</js>
+		
 		
 		<!-- Custom ACC JS -->
 		<js>/_ui/desktop/common/js/acc.common.js</js>

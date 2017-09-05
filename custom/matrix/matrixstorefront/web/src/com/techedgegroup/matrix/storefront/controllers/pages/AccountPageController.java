@@ -76,10 +76,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techedgegroup.matrix.facades.data.NoteData;
 import com.techedgegroup.matrix.facades.facade.ExtendedCustomerFacade;
+import com.techedgegroup.matrix.facades.facade.ExtendedDefaultUserFacade;
 import com.techedgegroup.matrix.storefront.controllers.ControllerConstants;
 import com.techedgegroup.matrix.storefront.forms.MatrixUpdateProfileForm;
 
@@ -113,7 +115,7 @@ public class AccountPageController extends AbstractSearchPageController
 	private static final String REDIRECT_TO_UPDATE_PROFILE = REDIRECT_PREFIX + "/my-account/update-profile";
 	private static final String REDIRECT_TO_PASSWORD_UPDATE_PAGE = REDIRECT_PREFIX + "/my-account/update-password";
 	private static final String REDIRECT_TO_ORDER_HISTORY_PAGE = REDIRECT_PREFIX + "/my-account/orders";
-
+	private static final String REDIRECT_TO_UPDATE_PROFILE_NOTE = "/my-account/update-profile";
 	/**
 	 * We use this suffix pattern because of an issue with Spring 3.1 where a Uri value is incorrectly extracted if it
 	 * contains on or more '.' characters. Please see https://jira.springsource.org/browse/SPR-6164 for a discussion on the
@@ -121,6 +123,7 @@ public class AccountPageController extends AbstractSearchPageController
 	 */
 	private static final String ORDER_CODE_PATH_VARIABLE_PATTERN = "{orderCode:.*}";
 	private static final String ADDRESS_CODE_PATH_VARIABLE_PATTERN = "{addressCode:.*}";
+	private static final String NOTE_CODE_PATH_VARIABLE_PATTERN = "{noteCode:.*}";
 
 	// CMS Pages
 	private static final String ACCOUNT_CMS_PAGE = "account";
@@ -144,6 +147,9 @@ public class AccountPageController extends AbstractSearchPageController
 
 	@Resource(name = "userFacade")
 	private UserFacade userFacade;
+
+	@Resource(name = "userFacade")
+	private ExtendedDefaultUserFacade extendedUserFacade;
 
 	@Resource(name = "customerFacade")
 	private CustomerFacade customerFacade;
@@ -497,7 +503,8 @@ public class AccountPageController extends AbstractSearchPageController
 
 		final CustomerData customerData = extendedCustomerFacade.getCurrentCustomer();
 		final MatrixUpdateProfileForm matrixUpdateProfileForm = new MatrixUpdateProfileForm();
-		final List<NoteData> comments = customerData.getNotes();
+		final List<NoteData> notes = customerData.getNotes();
+
 
 		matrixUpdateProfileForm.setTitleCode(customerData.getTitleCode());
 		matrixUpdateProfileForm.setFirstName(customerData.getFirstName());
@@ -505,7 +512,7 @@ public class AccountPageController extends AbstractSearchPageController
 		matrixUpdateProfileForm.setIsShadow(customerData.isIsShadow());
 
 		model.addAttribute("matrixUpdateProfileForm", matrixUpdateProfileForm);
-		model.addAttribute("comments", comments);
+		model.addAttribute("notes", notes);
 
 		model.addAttribute(ADDRESS_DATA_ATTR, userFacade.getAddressBook());
 
@@ -677,6 +684,32 @@ public class AccountPageController extends AbstractSearchPageController
 		storeCmsPageInModel(model, getContentPageForLabelOrId(ADDRESS_BOOK_CMS_PAGE));
 		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADDRESS_BOOK_CMS_PAGE));
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_ADDRESS_BOOK));
+		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
+		return getViewForPage(model);
+	}/*
+	  * autor Pasquale
+	  */
+
+	@RequestMapping(value = "/add-note", method = RequestMethod.GET)
+	@RequireHardLogIn
+	public String addNote(final Model model) throws CMSItemNotFoundException
+	{
+		model.addAttribute(COUNTRY_DATA_ATTR, checkoutFacade.getDeliveryCountries());
+		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
+		final AddressForm addressForm = getPreparedAddressForm();
+		model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
+		model.addAttribute(ADDRESS_BOOK_EMPTY_ATTR, Boolean.valueOf(userFacade.isAddressBookEmpty()));
+		model.addAttribute(IS_DEFAULT_ADDRESS_ATTR, Boolean.FALSE);
+		storeCmsPageInModel(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
+		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
+
+		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
+		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
+				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
+		breadcrumbs.add(new Breadcrumb("#",
+				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
+				null));
+		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		return getViewForPage(model);
 	}
@@ -922,6 +955,29 @@ public class AccountPageController extends AbstractSearchPageController
 		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.added");
 
 		return REDIRECT_TO_ADDRESS_BOOK_PAGE;
+	}
+
+	/*
+	 * Delete note
+	 *
+	 * @RequestMapping(value = "/remove-note/" + NOTE_CODE_PATH_VARIABLE_PATTERN, method = { RequestMethod.GET,
+	 * RequestMethod.POST })
+	 */
+	@RequestMapping(value = "/remove-note", method = RequestMethod.GET)
+	@ResponseBody
+	public String removeNote(@RequestParam(value = "noteCode", required = true) final String noteCode,
+			final RedirectAttributes redirectModel)
+	{
+		final NoteData noteData = new NoteData();
+
+		noteData.setCode(noteCode);
+
+		extendedUserFacade.removeNote(noteData);
+
+
+
+		GlobalMessages.addFlashMessage(redirectModel, GlobalMessages.CONF_MESSAGES_HOLDER, "account.confirmation.address.removed");
+		return REDIRECT_TO_UPDATE_PROFILE_NOTE;
 	}
 
 	@RequestMapping(value = "/remove-address/" + ADDRESS_CODE_PATH_VARIABLE_PATTERN, method =
