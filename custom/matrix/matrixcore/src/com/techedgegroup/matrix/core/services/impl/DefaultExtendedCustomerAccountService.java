@@ -91,9 +91,13 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 		customerModel.setUid(login);
 		customerModel.setName(name);
 
-		if (shadowCustomer)
+		if (shadowCustomer.booleanValue())
 		{
 			addNote(customerModel, notes, shadowCustomer);
+		}
+		else
+		{
+			customerModel.setShadowCustomer(shadowCustomer);
 		}
 
 		if (StringUtils.isNotBlank(titleCode))
