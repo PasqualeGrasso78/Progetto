@@ -61,14 +61,14 @@ public class DefaultExtendedCustomerFacade extends DefaultCustomerFacade impleme
 		final CustomerModel customer = getCurrentSessionCustomer();
 		customer.setOriginalUid(customerData.getDisplayUid());
 		getExtendedCustomerAccountService().updateProfile(customer, customerData.getTitleCode(), name, customerData.getUid(),
-				isShadow, customerData.getNote());
+				isShadow);
 
 	}
 
 	@Override
 	public void addNewNote(final CustomerData customerData) throws DuplicateUidException
 	{
-		validateDataBeforeUpdate(customerData);
+		//validateDataBeforeUpdate(customerData);
 
 
 		final Boolean isShadow = Boolean.valueOf(customerData.isIsShadow());

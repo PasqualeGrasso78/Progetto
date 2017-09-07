@@ -84,21 +84,13 @@ public class DefaultExtendedCustomerAccountService extends DefaultCustomerAccoun
 	@Deprecated
 	@Override
 	public void updateProfile(final CustomerModel customerModel, final String titleCode, final String name, final String login,
-			final Boolean shadowCustomer, final String notes) throws DuplicateUidException
+			final Boolean shadowCustomer) throws DuplicateUidException
 	{
 		validateParameterNotNullStandardMessage("customerModel", customerModel);
 
 		customerModel.setUid(login);
 		customerModel.setName(name);
-
-		if (shadowCustomer.booleanValue())
-		{
-			addNote(customerModel, notes, shadowCustomer);
-		}
-		else
-		{
-			customerModel.setShadowCustomer(shadowCustomer);
-		}
+		customerModel.setShadowCustomer(shadowCustomer);
 
 		if (StringUtils.isNotBlank(titleCode))
 		{

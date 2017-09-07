@@ -37,7 +37,7 @@ public interface ExtendedCustomerAccountService
 	void register(CustomerModel customerModel, String password, Boolean shadowCustomer, String notes) throws DuplicateUidException;
 
 	public void updateProfile(final CustomerModel customerModel, final String titleCode, final String name, final String login,
-			final Boolean shadowCustomer, final String notes) throws DuplicateUidException;
+			final Boolean shadowCustomer) throws DuplicateUidException;
 
 	/**
 	 * @param customer

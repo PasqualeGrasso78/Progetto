@@ -39,12 +39,7 @@
 						mandatory="true" />
 
 					<formElement:formCheckbox idKey="profile.isShadow"
-						labelKey="profile.isShadow" path="isShadow" mandatory="false" />
-
-
-					<formElement:formTextArea idKey="profile.note"
-						labelKey="profile.note" path="note" mandatory="false" />
-
+						labelKey="profile.isShadow" path="isShadow" mandatory="false"/>
 
 					<div class="row">
 						<div class="col-sm-6 col-sm-push-6">
@@ -77,22 +72,124 @@
 	</div>
 </div>
 
+<!--  aggiunta -->
 <div class="account-section-header ${noBorder}">
 	<spring:theme code="text.account.profile.updatePersonalNotes" />
 
 	<ycommerce:testId code="addressBook_addNewAddress_button">
-		<div class="account-section-header-add pull-right">
-			<%--		<a href="#" class="action-links removeNoteFromBookButton"
+		<div class="account-section-header-add pull-right" id = "buttonAddNote" >
+			<a href="#" class="action-links addNoteFromBookButton"
 				data-address-id="${fn:escapeXml(note.code)}"
-				data-popup-title="<spring:theme code="text.note.delete.popup.title" />">
+				data-popup-title="<spring:theme code="text.note.add.popup.title" />">
 
 				<spring:theme code="text.account.noteBook.addNote" />
 			</a>
- --%>
 		</div>
 	</ycommerce:testId>
 
 </div>
+
+
+
+<div class="display-none">
+	<div id="popup_confirm_note_add_"
+		class="account-address-removal-popup">
+		<div class="addressItem">
+		
+			<div class="address">
+					<textarea id = "noteArea" rows = "1" cols = "25" required></textarea>
+			
+			</div>
+			
+
+			<div class="modal-actions">
+				<div class="row">
+					<ycommerce:testId code="addressRemove_delete_button">
+						<div class="col-xs-12 col-sm-6 col-sm-push-6">
+							<a href="#"
+								class="btn btn-primary btn-block action-links addNoteButton"
+								data-popup-title="<spring:theme code="text.note.add.popup.title" />">
+								<spring:theme
+									code="text.address.add.note" /> </a>
+
+
+						</div>
+					</ycommerce:testId>
+					<div class="col-xs-12 col-sm-6 col-sm-pull-6">
+						<a class="btn btn-default btn-block closeColorBox"> <spring:theme
+								code="text.button.cancel" />
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="test" class="display-none">
+			
+	<div id="popup_success_note_add_">
+		<div class="addressItem">
+	
+			<div ><p>
+				<strong style="width:100%;"><spring:theme code="text.note.add.success" /></strong><br/>
+				</p>
+
+			</div>
+
+			<div class="modal-actions">
+				<div class="row">
+				
+					<ycommerce:testId code="addressRemove_delete_button">
+						
+							<a href="#"
+								class="btn btn-primary btn-block action-links closePopupNoteButton">
+								<spring:theme code="text.note.close" />
+							</a>
+						
+					</ycommerce:testId>
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="display-none">
+			
+	<div id="popup_insuccess_note_add_">
+		<div class="addressItem" >
+			
+			<div data-popup-title ="<spring:theme code="text.note.error" />"><p>
+				
+				<strong style="width:100%;"><spring:theme code="text.note.add.insuccess" /></strong><br/>
+				</p>
+
+			</div>
+
+			<div class="modal-actions">
+				<div class="row">
+				
+					<ycommerce:testId code="addressRemove_delete_button">
+						
+							<a href="#"
+								class="btn btn-primary btn-block action-links closePopupNoteButton">
+								<spring:theme code="text.note.close" />
+							</a>
+						
+					</ycommerce:testId>
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- fine aggiunta -->
+
 <spring:htmlEscape defaultHtmlEscape="true" />
 <div class="account-addressbook account-list">
 	<c:if test="${empty notes}">
