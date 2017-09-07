@@ -12,7 +12,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+
 <div class="account-section-header">
+	
 	<div class="row">
 		<div class="container-lg col-md-6">
 			<spring:theme code="text.account.profile.updatePersonalDetails" />

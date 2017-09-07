@@ -526,32 +526,6 @@ public class AccountPageController extends AbstractSearchPageController
 		return getViewForPage(model);
 	}
 
-
-	@RequestMapping(value = "/addnewnote", method = RequestMethod.POST)
-	@ResponseBody
-	public String addNewNote(@RequestParam(value = "description", required = true) final String description, final Model model)
-			throws CMSItemNotFoundException, DuplicateUidException
-	{
-
-
-		final String returnAction = REDIRECT_TO_UPDATE_PROFILE;
-		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
-		final CustomerData customerData = new CustomerData();
-		//customerData.setTitleCode(currentCustomerData.getTitleCode());
-		customerData.setNote(description);
-		customerData.setIsShadow(currentCustomerData.isIsShadow());
-		customerData.setUid(currentCustomerData.getUid());
-		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
-
-		storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
-		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
-
-		extendedCustomerFacade.addNewNote(customerData);
-
-		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
-
-		return returnAction;
-	}
 	/*
 	 * @RequestMapping(value = "/update-profile", method = RequestMethod.POST)
 	 *
@@ -601,6 +575,7 @@ public class AccountPageController extends AbstractSearchPageController
 		customerData.setFirstName(updateMatrixProfileForm.getFirstName());
 		customerData.setLastName(updateMatrixProfileForm.getLastName());
 		customerData.setIsShadow(updateMatrixProfileForm.getIsShadow());
+		customerData.setNote(updateMatrixProfileForm.getNote());
 		customerData.setUid(currentCustomerData.getUid());
 		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
 

@@ -453,49 +453,33 @@ ACC.address = {
 					var popupTitle = $(this).data("popupTitle");
 					var description = $("#noteArea").val();
 					var isShadow = $("#checkboxShadow").val();
-					if(description!=''){
+					
+					$.ajax({
 						
-						$.ajax({
+						url : ACC.config.encodedContextPath
+								+ '/my-account/addnewnote',
+						data: {description:description,
+							   isShadow:isShadow},
+						type : 'POST',
+						success : function(data) {
 							
-							url : ACC.config.encodedContextPath
-									+ '/my-account/addnewnote',
-							data: {description:description,
-								   isShadow:isShadow},
-							type : 'POST',
-							success : function(data) {
-								
-								ACC.colorbox.open(popupTitle, {
-									inline : true,
-									height : false,
-									overlayClose: false,
-									href : "#popup_success_note_add_",
-									onComplete : function() {
-
-										$(this).colorbox.resize();
-										$("button#cboxClose").hide();
-									}
-								});
-							},
-							error : function() {
-								
-								location.reload();
-							}
-						  });
-						}else{
-							
-							/*ACC.colorbox.open(popupTitle, {
+							ACC.colorbox.open(popupTitle, {
 								inline : true,
 								height : false,
 								overlayClose: false,
-								href : "#popup_insuccess_note_add_",
+								href : "#popup_success_note_add_",
 								onComplete : function() {
 
 									$(this).colorbox.resize();
-									$("button#cboxClose").hide();*/
+									$("button#cboxClose").hide();
 								}
 							});
-							
+						},
+						error : function() {
+							location.reload();
 						}
+
+					});
 
 				})
 	}
@@ -503,12 +487,6 @@ ACC.address = {
 };
 
 $(document).ready(function(){
-	if( $('input[type="checkbox"]').is(':checked')) {
-	       $("#buttonAddNote").show();
-	   } else {
-	       $("#buttonAddNote").hide();
-	   }
-	 
 	$('input[type="checkbox"]').click(function() {
 	   if( $(this).is(':checked')) {
 	       $("#buttonAddNote").show();
