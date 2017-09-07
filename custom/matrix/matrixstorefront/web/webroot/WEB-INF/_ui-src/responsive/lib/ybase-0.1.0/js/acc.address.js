@@ -339,13 +339,11 @@ ACC.address = {
 							ACC.colorbox.open(popupTitle, {
 								inline : true,
 								height : false,
-								overlayClose:false,
 								href : "#popup_success_note_removal_"
 										+ noteCode,
 								onComplete : function() {
 
 									$(this).colorbox.resize();
-									$("button#cboxClose").hide();
 								}
 							});
 						},
@@ -452,41 +450,58 @@ ACC.address = {
 					
 					var popupTitle = $(this).data("popupTitle");
 					var description = $("#noteArea").val();
-					var isShadow = $("#checkboxShadow").val();
+					var isShadow = $('input[type="checkbox"]').val();
 					
-					$.ajax({
+					if (description != ''){
 						
-						url : ACC.config.encodedContextPath
-								+ '/my-account/addnewnote',
-						data: {description:description,
-							   isShadow:isShadow},
-						type : 'POST',
-						success : function(data) {
+						$.ajax({
 							
-							ACC.colorbox.open(popupTitle, {
-								inline : true,
-								height : false,
-								overlayClose: false,
-								href : "#popup_success_note_add_",
-								onComplete : function() {
+							url : ACC.config.encodedContextPath
+									+ '/my-account/addnewnote',
+									data: {note:description,
+										isShadow:isShadow,
+											notes:[]
+										   },
+							type : 'POST',
+							success : function(data) {
+								
+								ACC.colorbox.open(popupTitle, {
+									inline : true,
+									height : false,
+									overlayClose: false,
+									href : "#popup_success_note_add_",
+									onComplete : function() {
 
-									$(this).colorbox.resize();
-									$("button#cboxClose").hide();
-								}
-							});
-						},
-						error : function() {
-							location.reload();
-						}
+										$(this).colorbox.resize();
+										$("button#cboxClose").hide();
+									}
+								});
+							},
+							error : function() {
+								location.reload();
+							}
 
-					});
+						});
 
+						
+					}else{
+						
+						 $("#Error").show();
+						 ACC.colorbox.close();
+					}
 				})
 	}
-
 };
 
 $(document).ready(function(){
+	
+
+	if($('input[type="checkbox"]').is(':checked')){
+		 $("#buttonAddNote").show();
+	}else{
+		 $("#buttonAddNote").hide();
+	}
+	
 	$('input[type="checkbox"]').click(function() {
 	   if( $(this).is(':checked')) {
 	       $("#buttonAddNote").show();
@@ -495,3 +510,5 @@ $(document).ready(function(){
 	   }
 	});
 	});
+
+

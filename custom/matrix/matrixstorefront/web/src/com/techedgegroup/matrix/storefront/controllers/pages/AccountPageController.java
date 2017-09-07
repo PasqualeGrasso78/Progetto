@@ -528,8 +528,10 @@ public class AccountPageController extends AbstractSearchPageController
 
 
 	@RequestMapping(value = "/addnewnote", method = RequestMethod.POST)
-	@ResponseBody
-	public String addNewNote(@RequestParam(value = "description", required = true) final String description, final Model model)
+
+	//public String addNewNote(@RequestParam(value = "description", required = true) final String description,
+	//	@RequestParam(value = "isShadow", required = true) final boolean isShadow, final Model model)
+	public String addNewNote(final MatrixUpdateProfileForm matrixUpdateProfileForm, final Model model)
 			throws CMSItemNotFoundException, DuplicateUidException
 	{
 
@@ -537,9 +539,8 @@ public class AccountPageController extends AbstractSearchPageController
 		final String returnAction = REDIRECT_TO_UPDATE_PROFILE;
 		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
 		final CustomerData customerData = new CustomerData();
-		//customerData.setTitleCode(currentCustomerData.getTitleCode());
-		customerData.setNote(description);
-		customerData.setIsShadow(currentCustomerData.isIsShadow());
+		customerData.setNote(matrixUpdateProfileForm.getNote());
+		customerData.setIsShadow(matrixUpdateProfileForm.getIsShadow());
 		customerData.setUid(currentCustomerData.getUid());
 		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
 
@@ -552,6 +553,7 @@ public class AccountPageController extends AbstractSearchPageController
 
 		return returnAction;
 	}
+
 	/*
 	 * @RequestMapping(value = "/update-profile", method = RequestMethod.POST)
 	 *
@@ -583,6 +585,9 @@ public class AccountPageController extends AbstractSearchPageController
 	 * model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE)); return
 	 * returnAction; }
 	 */
+
+
+
 
 	/*
 	 * author Pasquale

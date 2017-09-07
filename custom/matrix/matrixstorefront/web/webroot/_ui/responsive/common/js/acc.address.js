@@ -339,13 +339,11 @@ ACC.address = {
 							ACC.colorbox.open(popupTitle, {
 								inline : true,
 								height : false,
-								overlayClose:false,
 								href : "#popup_success_note_removal_"
 										+ noteCode,
 								onComplete : function() {
 
 									$(this).colorbox.resize();
-									$("button#cboxClose").hide();
 								}
 							});
 						},
@@ -452,15 +450,18 @@ ACC.address = {
 					
 					var popupTitle = $(this).data("popupTitle");
 					var description = $("#noteArea").val();
-					var isShadow = $("#checkboxShadow").val();
-					if(description!=''){
+					var isShadow = $('input[type="checkbox"]').val();
+					
+					if (description != ''){
 						
 						$.ajax({
 							
 							url : ACC.config.encodedContextPath
 									+ '/my-account/addnewnote',
-							data: {description:description,
-								   isShadow:isShadow},
+									data: {note:description,
+										isShadow:isShadow,
+											notes:[]
+										   },
 							type : 'POST',
 							success : function(data) {
 								
@@ -477,38 +478,29 @@ ACC.address = {
 								});
 							},
 							error : function() {
-								
 								location.reload();
 							}
-						  });
-						}else{
-							
-							/*ACC.colorbox.open(popupTitle, {
-								inline : true,
-								height : false,
-								overlayClose: false,
-								href : "#popup_insuccess_note_add_",
-								onComplete : function() {
 
-									$(this).colorbox.resize();
-									$("button#cboxClose").hide();*/
-								}
-							});
-							
-						}
+						});
 
+						
+					}else{
+						 $("#Error").show();
+						 ACC.colorbox.close();
+					}
 				})
 	}
-
 };
 
 $(document).ready(function(){
-	if( $('input[type="checkbox"]').is(':checked')) {
-	       $("#buttonAddNote").show();
-	   } else {
-	       $("#buttonAddNote").hide();
-	   }
-	 
+	
+
+	if($('input[type="checkbox"]').is(':checked')){
+		 $("#buttonAddNote").show();
+	}else{
+		 $("#buttonAddNote").hide();
+	}
+	
 	$('input[type="checkbox"]').click(function() {
 	   if( $(this).is(':checked')) {
 	       $("#buttonAddNote").show();
@@ -517,3 +509,4 @@ $(document).ready(function(){
 	   }
 	});
 	});
+
