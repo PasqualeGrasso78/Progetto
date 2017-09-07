@@ -370,7 +370,7 @@ ACC.address = {
 	},
 	
 	//agg
-
+/*
 	showAddNoteFromBookConfirmation : function() {
 		$(document).on("click", ".addNoteFromBookButton", function() {
 			//var addressId = $(this).data("addressId");
@@ -421,7 +421,7 @@ ACC.address = {
 
 				})
 	},
-	
+	*/
 	//agg
 
 	showAddNoteFromBookConfirmation : function() {
