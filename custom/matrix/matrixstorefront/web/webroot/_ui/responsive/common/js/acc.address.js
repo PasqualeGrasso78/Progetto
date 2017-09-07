@@ -339,11 +339,13 @@ ACC.address = {
 							ACC.colorbox.open(popupTitle, {
 								inline : true,
 								height : false,
+								overlayClose:false,
 								href : "#popup_success_note_removal_"
 										+ noteCode,
 								onComplete : function() {
 
 									$(this).colorbox.resize();
+									$("button#cboxClose").hide();
 								}
 							});
 						},

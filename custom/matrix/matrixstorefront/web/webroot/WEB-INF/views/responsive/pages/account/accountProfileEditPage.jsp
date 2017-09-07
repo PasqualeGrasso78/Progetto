@@ -191,10 +191,10 @@
 <!-- fine aggiunta -->
 
 <spring:htmlEscape defaultHtmlEscape="true" />
-<div class="account-addressbook account-list">
+<div class="account-addressbook account-list" id="noteList">
 	<c:if test="${empty notes}">
 		<div class="account-section-content content-empty">
-			<spring:theme code="text.account.addressBook.noSavedAddresses" />
+			<spring:theme code="text.account.noteBook.noSavedNotes" />
 		</div>
 	</c:if>
 

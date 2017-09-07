@@ -605,7 +605,7 @@ public class AccountPageController extends AbstractSearchPageController
 		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
 
 
-		/* conflitto */
+
 
 		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
 
@@ -711,33 +711,8 @@ public class AccountPageController extends AbstractSearchPageController
 		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_ADDRESS_BOOK));
 		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
 		return getViewForPage(model);
-	}/*
-	  * autor Pasquale
-	  */
-
-	@RequestMapping(value = "/add-note", method = RequestMethod.GET)
-	@RequireHardLogIn
-	public String addNote(final Model model) throws CMSItemNotFoundException
-	{
-		model.addAttribute(COUNTRY_DATA_ATTR, checkoutFacade.getDeliveryCountries());
-		model.addAttribute(TITLE_DATA_ATTR, userFacade.getTitles());
-		final AddressForm addressForm = getPreparedAddressForm();
-		model.addAttribute(ADDRESS_FORM_ATTR, addressForm);
-		model.addAttribute(ADDRESS_BOOK_EMPTY_ATTR, Boolean.valueOf(userFacade.isAddressBookEmpty()));
-		model.addAttribute(IS_DEFAULT_ADDRESS_ATTR, Boolean.FALSE);
-		storeCmsPageInModel(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
-		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(ADD_EDIT_ADDRESS_CMS_PAGE));
-
-		final List<Breadcrumb> breadcrumbs = accountBreadcrumbBuilder.getBreadcrumbs(null);
-		breadcrumbs.add(new Breadcrumb(MY_ACCOUNT_ADDRESS_BOOK_URL,
-				getMessageSource().getMessage(TEXT_ACCOUNT_ADDRESS_BOOK, null, getI18nService().getCurrentLocale()), null));
-		breadcrumbs.add(new Breadcrumb("#",
-				getMessageSource().getMessage("text.account.addressBook.addEditAddress", null, getI18nService().getCurrentLocale()),
-				null));
-		model.addAttribute(BREADCRUMBS_ATTR, breadcrumbs);
-		model.addAttribute(ThirdPartyConstants.SeoRobots.META_ROBOTS, ThirdPartyConstants.SeoRobots.NOINDEX_NOFOLLOW);
-		return getViewForPage(model);
 	}
+
 
 	@RequestMapping(value = "/add-address", method = RequestMethod.GET)
 	@RequireHardLogIn
