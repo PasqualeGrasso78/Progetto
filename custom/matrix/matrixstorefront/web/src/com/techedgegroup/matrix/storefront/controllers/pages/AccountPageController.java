@@ -526,6 +526,34 @@ public class AccountPageController extends AbstractSearchPageController
 		return getViewForPage(model);
 	}
 
+
+
+	@RequestMapping(value = "/addnewnote", method = RequestMethod.POST)
+
+	//public String addNewNote(@RequestParam(value = "description", required = true) final String description,
+	//	@RequestParam(value = "isShadow", required = true) final boolean isShadow, final Model model)
+	public String addNewNote(final MatrixUpdateProfileForm matrixUpdateProfileForm, final Model model)
+			throws CMSItemNotFoundException, DuplicateUidException
+	{
+
+
+		final String returnAction = REDIRECT_TO_UPDATE_PROFILE;
+		final CustomerData currentCustomerData = extendedCustomerFacade.getCurrentCustomer();
+		final CustomerData customerData = new CustomerData();
+		customerData.setNote(matrixUpdateProfileForm.getNote());
+		customerData.setIsShadow(matrixUpdateProfileForm.getIsShadow());
+		customerData.setUid(currentCustomerData.getUid());
+		customerData.setDisplayUid(currentCustomerData.getDisplayUid());
+
+		storeCmsPageInModel(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+		setUpMetaDataForContentPage(model, getContentPageForLabelOrId(UPDATE_PROFILE_CMS_PAGE));
+
+		extendedCustomerFacade.addNewNote(customerData);
+
+		model.addAttribute(BREADCRUMBS_ATTR, accountBreadcrumbBuilder.getBreadcrumbs(TEXT_ACCOUNT_PROFILE));
+
+		return returnAction;
+	}
 	/*
 	 * @RequestMapping(value = "/update-profile", method = RequestMethod.POST)
 	 *

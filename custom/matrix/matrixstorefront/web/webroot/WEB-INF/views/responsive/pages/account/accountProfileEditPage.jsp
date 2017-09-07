@@ -13,6 +13,14 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 
+<div class="display-none" id="Error">
+	<div class="alert alert-info alert-dismissable"
+		style="font-size: 14px; padding-left: 0px; padding-right: 0px;">
+		<button class="close" aria-hidden="true" data-dismiss="alert"
+			type="button">x</button>
+		<spring:theme code="text.note.add.insuccess" />
+	</div>
+</div>
 <div class="account-section-header">
 	
 	<div class="row">
