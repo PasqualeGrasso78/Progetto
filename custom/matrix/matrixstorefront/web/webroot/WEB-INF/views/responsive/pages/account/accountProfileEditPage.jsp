@@ -222,14 +222,7 @@
 
 
 						<div class="account-cards-actions pull-left">
-							<%-- <ycommerce:testId code="addressBook_editAddress_button">
-								<a class="action-links"
-									href="edit-address/${fn:escapeXml(address.id)}"> <span
-									class="glyphicon glyphicon-pencil"></span>
-								</a>
-							</ycommerce:testId>
-							--%>
-							<%--Button remove address --%>
+							
 							<ycommerce:testId code="addressBook_removeAddress_button">
 
 								<a href="#" class="action-links removeNoteFromBookButton"
@@ -294,7 +287,7 @@
 						
 
 						<div ><p>
-							<strong style="width:100%;"><spring:theme code="text.note.remove.success" /></strong><br/>
+							<strong style="width:100%;"><spring:theme code="account.confirmation.note.removed" /></strong><br/>
 							</p>
 							
 

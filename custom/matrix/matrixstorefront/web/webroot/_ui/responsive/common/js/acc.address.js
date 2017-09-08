@@ -368,11 +368,12 @@ ACC.address = {
 			var sUrl = $(this).data("backToAddresses");
 			window.location = sUrl;
 		});
-	},	
-
+	},
+	
 	showAddNoteFromBookConfirmation : function() {
 		$(document).on("click", ".addNoteFromBookButton", function() {
 			
+			$(".global-alerts").hide(); 
 			var popupTitle = $(this).data("popupTitle");
 
 			ACC.colorbox.open(popupTitle, {
@@ -434,9 +435,16 @@ ACC.address = {
 						
 						 $("#Error").show();
 						 ACC.colorbox.close();
+						 
 					}
 				})
-	}
+	},
+	
+	backCloseMessageErrorNote : function() {
+		 $(document).on("click", ".buttonErrorNote", function(){
+				location.reload();
+			});
+		}
 };
 
 $(document).ready(function(){
