@@ -339,13 +339,11 @@ ACC.address = {
 							ACC.colorbox.open(popupTitle, {
 								inline : true,
 								height : false,
-								overlayClose:false,
 								href : "#popup_success_note_removal_"
 										+ noteCode,
 								onComplete : function() {
 
 									$(this).colorbox.resize();
-									$("button#cboxClose").hide();
 								}
 							});
 						},
@@ -369,66 +367,11 @@ ACC.address = {
 			var sUrl = $(this).data("backToAddresses");
 			window.location = sUrl;
 		});
-	},
-	
-	//agg
+	},	
 
 	showAddNoteFromBookConfirmation : function() {
 		$(document).on("click", ".addNoteFromBookButton", function() {
-			//var addressId = $(this).data("addressId");
-			var popupTitle = $(this).data("popupTitle");
-
-			ACC.colorbox.open(popupTitle, {
-				inline : true,
-				height : false,
-				href : "#popup_confirm_note_add_",
-				onComplete : function() {
-
-					$(this).colorbox.resize();
-				}
-			});
-
-		})
-	},
-
-	addNoteConfirmation : function() {
-		$(document).on(
-				"click",
-				".addNoteButton",
-				function() {
-					var popupTitle = $(this).data("popupTitle");
-					$.ajax({
-						url : ACC.config.encodedContextPath
-								+ '/my-account/remove-note?noteCode='
-								+ noteCode,
-						async : true,
-						type : 'POST',
-						success : function(data) {
-							ACC.colorbox.open(popupTitle, {
-								inline : true,
-								height : false,
-								href : "#popup_success_note_removal_"
-										+ noteCode,
-								onComplete : function() {
-
-									$(this).colorbox.resize();
-								}
-							});
-						},
-						error : function() {
-							location.reload();
-						}
-
-					});
-
-				})
-	},
-	
-	//agg
-
-	showAddNoteFromBookConfirmation : function() {
-		$(document).on("click", ".addNoteFromBookButton", function() {
-			//var addressId = $(this).data("addressId");
+			
 			var popupTitle = $(this).data("popupTitle");
 
 			ACC.colorbox.open(popupTitle, {
@@ -451,7 +394,7 @@ ACC.address = {
 				function() {
 					
 					var popupTitle = $(this).data("popupTitle");
-					var description = $("#noteArea").val();				
+					var description = $("#noteArea").val();
 					var isShadow = $('input[type="checkbox"]').val();
 					
 					if (description != ''){
@@ -483,23 +426,19 @@ ACC.address = {
 								location.reload();
 							}
 
-									
 						});
-
-					
 
 						
 					}else{
+						
 						 $("#Error").show();
 						 ACC.colorbox.close();
 					}
 				})
 	}
-
 };
 
 $(document).ready(function(){
-
 	
 
 	if($('input[type="checkbox"]').is(':checked')){
@@ -516,3 +455,5 @@ $(document).ready(function(){
 	   }
 	});
 	});
+
+
