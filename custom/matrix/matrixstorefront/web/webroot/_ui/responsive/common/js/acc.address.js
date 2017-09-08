@@ -1,6 +1,7 @@
 ACC.address = {
 		
-		_autoload : [ "addNoteConfirmation","bindToChangeAddressButton", "bindCreateUpdateAddressForm",
+		_autoload : [ "addNoteConfirmation","bindToChangeAddressButton",
+			"backCloseMessageErrorNote","bindCreateUpdateAddressForm",
 			"bindSuggestedDeliveryAddresses",
 			"bindCountrySpecificAddressForms", "showAddressFormButtonPanel",
 			"bindViewAddressBook", "bindToColorboxClose",
